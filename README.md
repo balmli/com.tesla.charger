@@ -167,13 +167,6 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
-#### 1.0.7
-
-- Rounded 'meter power' for 'Charging stopped' trigger
-- Better error handling
-- Added currency / kWh in charge plan - token
-- Fixed min / max values for ranges
-
-#### 1.0.6
+#### 1.0.10
 
 - Initial version
