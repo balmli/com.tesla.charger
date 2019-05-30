@@ -1,0 +1,1420 @@
+{
+  "id": "com.tesla.charger",
+  "version": "1.0.10",
+  "compatibility": ">=2.0.5",
+  "sdk": 2,
+  "brandColor": "#CC0000",
+  "name": {
+    "en": "Tesla Smart Charger"
+  },
+  "description": {
+    "en": "Charge your Tesla with lowest utility prices."
+  },
+  "category": [
+    "localization"
+  ],
+  "tags": {
+    "en": [ "tesla", "charger", "charging", "utility prices" ]
+  },
+  "permissions": [
+    "homey:manager:geolocation"
+  ],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Bjørnar Almli",
+    "email": "bjornar.almli@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bjørnar Almli",
+        "email": "bjornar.almli@gmail.com"
+      }
+    ]
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "charging_started",
+        "title": {
+          "en": "Charging started"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "battery",
+            "title": {
+              "en": "battery"
+            },
+            "type": "number",
+            "example": 50
+          }
+        ]
+      },
+      {
+        "id": "charging_stopped",
+        "title": {
+          "en": "Charging stopped"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "battery",
+            "title": {
+              "en": "battery"
+            },
+            "type": "number",
+            "example": 50
+          },
+          {
+            "name": "meter_power",
+            "title": {
+              "en": "meter_power"
+            },
+            "type": "number",
+            "example": 25
+          },
+          {
+            "name": "complete",
+            "type": "boolean",
+            "title": {
+              "en": "complete"
+            }
+          }
+        ]
+      },
+      {
+        "id": "vehicle_state_changed",
+        "title": {
+          "en": "The vehicle state changed"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "vehicle_state",
+            "title": {
+              "en": "vehicle_state"
+            },
+            "type": "string",
+            "example": "online"
+          }
+        ]
+      },
+      {
+        "id": "charge_plan_created",
+        "title": {
+          "en": "Charge plan created"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "charge_plan",
+            "title": {
+              "en": "charge_plan"
+            },
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_left_home",
+        "title": {
+          "en": "Vehicle left home"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "distance_from_home",
+            "title": {
+              "en": "distance_from_home"
+            },
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_came_home",
+        "title": {
+          "en": "Vehicle came home"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "distance_from_home",
+            "title": {
+              "en": "distance_from_home"
+            },
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_left_location",
+        "title": {
+          "en": "Vehicle left location"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "name",
+            "title": {
+              "en": "name"
+            },
+            "type": "string"
+          },
+          {
+            "name": "latitude",
+            "title": {
+              "en": "latitude"
+            },
+            "type": "number"
+          },
+          {
+            "name": "longitude",
+            "title": {
+              "en": "longitude"
+            },
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_entered_location",
+        "title": {
+          "en": "Vehicle entered location"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "name",
+            "title": {
+              "en": "name"
+            },
+            "type": "string"
+          },
+          {
+            "name": "latitude",
+            "title": {
+              "en": "latitude"
+            },
+            "type": "number"
+          },
+          {
+            "name": "longitude",
+            "title": {
+              "en": "longitude"
+            },
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_started_moving",
+        "title": {
+          "en": "Vehicle started moving"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "latitude",
+            "title": {
+              "en": "latitude"
+            },
+            "type": "number"
+          },
+          {
+            "name": "longitude",
+            "title": {
+              "en": "longitude"
+            },
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "vehicle_stopped_moving",
+        "title": {
+          "en": "Vehicle stopped moving"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "latitude",
+            "title": {
+              "en": "latitude"
+            },
+            "type": "number"
+          },
+          {
+            "name": "longitude",
+            "title": {
+              "en": "longitude"
+            },
+            "type": "number"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_plugged_in",
+        "title": {
+          "en": "Is !{{plugged in|not plugged in}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_charge_port_open",
+        "title": {
+          "en": "Is charge port !{{open|not open}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_charging",
+        "title": {
+          "en": "Is charging !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_locked",
+        "title": {
+          "en": "Is !{{locked|unlocked}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_sentry_mode_on",
+        "title": {
+          "en": "Is Sentry Mode !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_aircondition_on",
+        "title": {
+          "en": "Is aircondition !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_home",
+        "title": {
+          "en": "Is !{{home|not home}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_moving",
+        "title": {
+          "en": "Is !{{moving|not moving}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "is_at_location",
+        "title": {
+          "en": "Is at location"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "loc_no",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Location..."
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_charge_mode",
+        "title": {
+          "en": "Set charge mode"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "charge_mode",
+            "type": "dropdown",
+            "title": {
+              "en": "Charge mode"
+            },
+            "values": [
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "automatic",
+                "label": {
+                  "en": "Automatic"
+                }
+              },
+              {
+                "id": "manual_std",
+                "label": {
+                  "en": "Manual"
+                }
+              },
+              {
+                "id": "charge_now",
+                "label": {
+                  "en": "Charge now"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "charge_time_period",
+        "title": {
+          "en": "Set period for charging"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "charge_start",
+            "type": "time",
+            "title": {
+              "en": "Charge start"
+            },
+            "placeholder": {
+              "en": "22:00"
+            }
+          },
+          {
+            "name": "charge_end",
+            "type": "time",
+            "title": {
+              "en": "Charge end"
+            },
+            "placeholder": {
+              "en": "06:30"
+            }
+          },
+          {
+            "name": "charge_max_hours",
+            "type": "range",
+            "min": 1,
+            "max": 24,
+            "step": 0.5,
+            "label": "h",
+            "labelDecimals": 1,
+            "title": {
+              "en": "Charge hours per period"
+            }
+          }
+        ]
+      },
+      {
+        "id": "set_data_fetch_interval",
+        "title": {
+          "en": "Set 'Data fetch interval'"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "data_fetch_interval",
+            "type": "number",
+            "min": 1,
+            "max:": 1440,
+            "step": 1.0,
+            "label": "minutes",
+            "title": {
+              "en": "Data fetch interval"
+            },
+            "placeholder": {
+              "en": "Data fetch interval..."
+            }
+          }
+        ]
+      },
+      {
+        "id": "charge_port_door",
+        "title": {
+          "en": "Charge port door"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "CLOSE",
+                "label": {
+                  "en": "Close"
+                }
+              },
+              {
+                "id": "OPEN",
+                "label": {
+                  "en": "Open"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "charging",
+        "title": {
+          "en": "Charging"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "chargestate",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "OFF",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "ON",
+                "label": {
+                  "en": "On"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_charge_limit_mode",
+        "title": {
+          "en": "Set charge limit mode"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "chargemode",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "standard",
+                "label": {
+                  "en": "Standard"
+                }
+              },
+              {
+                "id": "max_range",
+                "label": {
+                  "en": "Max range"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_charge_limit",
+        "title": {
+          "en": "Set charge limit %"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "limit",
+            "type": "range",
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "label": "%",
+            "labelDecimals": 0
+          }
+        ]
+      },
+      {
+        "id": "aircondition_control",
+        "title": {
+          "en": "Aircondition"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "autoconditioningstate",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "OFF",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "ON",
+                "label": {
+                  "en": "On"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aircondition_temperature",
+        "title": {
+          "en": "Aircondition temperature"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "temp",
+            "type": "range",
+            "min": 15,
+            "max": 28,
+            "step": 0.5,
+            "label": "℃",
+            "labelDecimals": 1
+          }
+        ]
+      },
+      { "id":"door_lock_control",
+        "title":{
+          "en":"Lock / unlock doors"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter":"driver_id=Tesla"
+          },{
+            "name": "lock",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "LOCK",
+                "label": {
+                  "en": "Lock"
+                }
+              },{
+                "id": "OPEN",
+                "label": {
+                  "en": "Unlock"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      { "id":"actuate_trunk",
+        "title":{
+          "en":"Actuate trunk"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter":"driver_id=Tesla"
+          },{
+            "name": "which_trunk",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "front",
+                "label": {
+                  "en": "Front"
+                }
+              },{
+                "id": "rear",
+                "label": {
+                  "en": "Rear"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_sentry_mode",
+        "title": {
+          "en": "Set Sentry Mode"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "OFF",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "ON",
+                "label": {
+                  "en": "On"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "meter_power_reset",
+        "title": {
+          "en": "Reset power meter"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "add_current_location",
+        "title": {
+          "en": "Add current location to geofence"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "labe": {
+              "en": "Name"
+            },
+            "placeholder": {
+              "en": "Name..."
+            }
+          }
+        ]
+      },
+      {
+        "id": "delete_location",
+        "title": {
+          "en": "Delete location from geofence"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "loc_no",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Location..."
+            }
+          }
+        ]
+      },
+      {
+        "id": "honk_horn",
+        "title": {
+          "en": "Horn horn"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "flash_lights",
+        "title": {
+          "en": "Flash lights"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "id": "Tesla",
+      "name": {
+        "en": "Tesla"
+      },
+      "class": "other",
+      "capabilities": [
+        "charge_mode",
+        "charging_state",
+        "charge_rate",
+        "battery_range",
+        "planned_charge",
+        "measure_power",
+        "meter_power",
+        "measure_temperature",
+        "measure_temperature.outside",
+        "measure_battery",
+        "prev_charging_state",
+        "time_to_full_charge",
+        "charge_limit_soc",
+        "locked",
+        "odometer",
+        "vehicle_state"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature": {
+          "title": "Inside temperature"
+        },
+        "measure_temperature.outside": {
+          "title": "Outside temperature"
+        },
+        "measure_power": {
+          "title": "Charge power"
+        },
+        "meter_power": {
+          "title": "Power meter",
+          "units": {
+            "en": "kWh"
+          }
+        },
+        "measure_battery": {
+          "title": "Battery"
+        }
+      },
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Charge settings"
+          },
+          "children": [
+            {
+              "id": "charge_start",
+              "type": "text",
+              "label": {
+                "en": "Charge start"
+              },
+              "value": "22:00"
+            },
+            {
+              "id": "charge_end",
+              "type": "text",
+              "label": {
+                "en": "Charge end"
+              },
+              "value": "06:30"
+            },
+            {
+              "id": "charge_max_hours",
+              "type": "number",
+              "label": {
+                "en": "Charge hours per period"
+              },
+              "value": 6,
+              "min": 1,
+              "max:": 24,
+              "step": 0.5,
+              "hint": {
+                "en": "The number of hours for charging per charge period.  To get a low price, it is better to charge often."
+              }
+            },
+            {
+              "id": "charge_km_per_hour",
+              "type": "number",
+              "label": {
+                "en": "Charge rate (km/h)"
+              },
+              "value": 28,
+              "min": 1,
+              "max:": 1000,
+              "step": 0.1,
+              "hint": {
+                "en": "Charge rate will be updated once each day"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Utility price settings"
+          },
+          "children": [
+            {
+              "id": "priceArea",
+              "type": "dropdown",
+              "label": {
+                "en": "Price area"
+              },
+              "value": "Bergen",
+              "values": [
+                {
+                  "id": "SE1",
+                  "label": {
+                    "en": "Sweden - SE1"
+                  }
+                },
+                {
+                  "id": "SE2",
+                  "label": {
+                    "en": "Sweden - SE2"
+                  }
+                },
+                {
+                  "id": "SE3",
+                  "label": {
+                    "en": "Sweden - SE3"
+                  }
+                },
+                {
+                  "id": "SE4",
+                  "label": {
+                    "en": "Sweden - SE4"
+                  }
+                },
+                {
+                  "id": "DK1",
+                  "label": {
+                    "en": "Sweden - DK1"
+                  }
+                },
+                {
+                  "id": "DK2",
+                  "label": {
+                    "en": "Sweden - DK2"
+                  }
+                },
+                {
+                  "id": "FI",
+                  "label": {
+                    "en": "Finland - FI"
+                  }
+                },
+                {
+                  "id": "Oslo",
+                  "label": {
+                    "en": "Norway - Oslo"
+                  }
+                },
+                {
+                  "id": "Kr.sand",
+                  "label": {
+                    "en": "Norway - Kr.sand"
+                  }
+                },
+                {
+                  "id": "Bergen",
+                  "label": {
+                    "en": "Norway - Bergen"
+                  }
+                },
+                {
+                  "id": "Molde",
+                  "label": {
+                    "en": "Norway - Molde"
+                  }
+                },
+                {
+                  "id": "Tr.heim",
+                  "label": {
+                    "en": "Norway - Tr.heim"
+                  }
+                },
+                {
+                  "id": "Tromsø",
+                  "label": {
+                    "en": "Norway - Tromsø"
+                  }
+                },
+                {
+                  "id": "EE",
+                  "label": {
+                    "en": "Estonia - EE"
+                  }
+                },
+                {
+                  "id": "LV",
+                  "label": {
+                    "en": "Latvia - LV"
+                  }
+                },
+                {
+                  "id": "LT",
+                  "label": {
+                    "en": "Lithuania -LT"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "currency",
+              "type": "dropdown",
+              "label": {
+                "en": "Currency"
+              },
+              "value": "NOK",
+              "values": [
+                {
+                  "id": "EUR",
+                  "label": {
+                    "en": "EUR"
+                  }
+                },
+                {
+                  "id": "DKK",
+                  "label": {
+                    "en": "DKK"
+                  }
+                },
+                {
+                  "id": "NOK",
+                  "label": {
+                    "en": "NOK"
+                  }
+                },
+                {
+                  "id": "SEK",
+                  "label": {
+                    "en": "SEK"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Tracking settings"
+          },
+          "children": [
+            {
+              "id": "checkAllDataInterval",
+              "type": "number",
+              "label": {
+                "en": "Data fetch interval (minutes)"
+              },
+              "value": 60,
+              "min": 1,
+              "max": 1440,
+              "hint": {
+                "en": "Data fetch interval when not charging (minutes)"
+              }
+            },
+            {
+              "id": "locationAccuracy",
+              "type": "number",
+              "label": {
+                "en": "Location accuracy (meters)"
+              },
+              "value": 250,
+              "min": 10,
+              "max": 250,
+              "hint": {
+                "en": "Radius for checking if home and on locations. Default is 250 meters"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Account settings"
+          },
+          "children": [
+            {
+              "id": "password",
+              "type": "password",
+              "label": {
+                "en": "New password"
+              },
+              "hint": {
+                "en": "Reconfigure a changed password. This password will not be saved on Homey"
+              }
+            }
+          ]
+        }
+      ],
+      "pair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.png",
+            "usernameLabel": "Tesla account",
+            "usernamePlaceholder": "Username...",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password..."
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_vehicle"
+          }
+        },
+        {
+          "id": "add_vehicle",
+          "template": "add_devices"
+        }
+      ],
+      "images": {
+        "large": "/drivers/Tesla/assets/images/large_s.jpg",
+        "small": "/drivers/Tesla/assets/images/small_s.jpg"
+      }
+    }
+  ],
+  "capabilities": {
+    "charge_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Charge mode"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Charge mode"
+      },
+      "values": [
+        {
+          "id": "off",
+          "title": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "automatic",
+          "title": {
+            "en": "Automatic"
+          }
+        },
+        {
+          "id": "manual_std",
+          "title": {
+            "en": "Manual"
+          }
+        },
+        {
+          "id": "charge_now",
+          "title": {
+            "en": "Charge now"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "uiComponent": "picker"
+    },
+    "charging_state": {
+      "type": "string",
+      "title": {
+        "en": "Charging state"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Charging state"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/drivers/Tesla/assets/charging_state.svg"
+    },
+    "charge_rate": {
+      "type": "number",
+      "title": {
+        "en": "Charging rate"
+      },
+      "units": {
+        "en": "km/h"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Charging rate (km/h)"
+      },
+      "getable": true,
+      "setable": false,
+      "decimals": 2,
+      "icon": "/drivers/Tesla/assets/charging_rate.svg"
+    },
+    "battery_range": {
+      "type": "number",
+      "title": {
+        "en": "Battery range"
+      },
+      "units": {
+        "en": "km"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Battery range (km)"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/drivers/Tesla/assets/battery_range.svg"
+    },
+    "planned_charge": {
+      "type": "number",
+      "title": {
+        "en": "Planned charge"
+      },
+      "units": {
+        "en": "km"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Planned charge (km)"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/drivers/Tesla/assets/planned_charge.svg"
+    },
+    "prev_charging_state": {
+      "type": "string",
+      "title": {
+        "en": "Prev. charging state"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": false,
+      "uiComponent": null
+    },
+    "time_to_full_charge": {
+      "type": "number",
+      "title": {
+        "en": "Time to full charge"
+      },
+      "units": {
+        "en": "h"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Time to full charge (h)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
+    "charge_limit_soc": {
+      "type": "number",
+      "title": {
+        "en": "Charge limit"
+      },
+      "units": {
+        "en": "%"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Charge limit (%)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
+    "locked": {
+      "type": "boolean",
+      "title": {
+        "en": "Locked"
+      },
+      "desc": {
+        "en": "Is the car locked"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
+    "odometer": {
+      "type": "number",
+      "title": {
+        "en": "Odometer"
+      },
+      "units": {
+        "en": "km"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Odometer in kilometers (km)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
+    "vehicle_state": {
+      "type": "string",
+      "title": {
+        "en": "Vehicle state"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Vehicle state"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    }
+  }
+}

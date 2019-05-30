@@ -1,0 +1,16 @@
+{
+  "device": {
+    "errorAccountAccess": "No access to account. Check your account and enter a new password in device settings.",
+    "errorAccountAccessNotification": "No access to your **Tesla** account. Check your account and enter a new password in device settings.",
+    "invalid_password": "Invalid password",
+    "invalid_data_fetch_interval": "Invalid data fetch interval",
+    "invalid_max_avail_temp": "Temperature cannot be above max. allowed temperature",
+    "invalid_min_avail_temp": "Temperature cannot be below min. allowed temperature",
+    "max_number_of_locations_reached": "Maximum number of locations reached",
+    "charging_complete": "Charging complete",
+    "charging_not_complete": "Charging stopped, but not complete",
+    "charge_plan": "Charge plan",
+    "charge_hours": "Charge hours",
+    "cost_reduction": "Cost reduction"
+  }
+}

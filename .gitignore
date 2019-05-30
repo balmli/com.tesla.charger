@@ -1,0 +1,14 @@
+env.json
+*.iml
+.idea
+node_modules/*
+!node_modules/cookie
+!node_modules/homey-log
+!node_modules/http.min
+!node_modules/json-stringify-safe
+!node_modules/lsmod
+!node_modules/moment
+!node_modules/raven
+!node_modules/stack-trace
+!node_modules/uuid
+test2/*
