@@ -288,12 +288,8 @@ module.exports = class TeslaChargerDevice extends Device {
             .registerRunListener(this.flashLights.bind(this));
 
         this.registerCapabilityListener('charge_mode', async (value, opts) => {
-            await this.clearExistingChargePlan();
-            if (value === CHARGE_MODE_CHARGE_NOW) {
-                // Needs a fresh status to start charging instantly
-                let allData = await this.fetchAllDataState();
-            }
-            this.logger.info(`charge_mode: ${value}`);
+            let oldChargeMode = this.getCapabilityValue('charge_mode');
+            this.changeChargeMode(value, oldChargeMode);
         });
 
     }
@@ -315,10 +311,18 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async setChargeMode(args, state) {
+        let oldChargeMode = this.getCapabilityValue('charge_mode');
         await this.setCapabilityValue('charge_mode', args.charge_mode);
-        if (args.charge_mode === CHARGE_MODE_CHARGE_NOW) {
-            // Needs a fresh status to start charging instantly
-            let allData = await this.fetchAllDataState();
+        this.changeChargeMode(args.charge_mode, oldChargeMode);
+    }
+
+    async changeChargeMode(newChargeMode, oldChargeMode) {
+        this.logger.info(`changeChargeMode: from ${oldChargeMode} to ${newChargeMode}`);
+        await this.clearExistingChargePlan();
+        if (newChargeMode === CHARGE_MODE_CHARGE_NOW || oldChargeMode === CHARGE_MODE_CHARGE_NOW) {
+            await this.setStoreValue('lastGetAlldata', 0);
+            this._turnOffCharging = oldChargeMode === CHARGE_MODE_CHARGE_NOW;
+            this.addCheckCharging();
         }
     }
 
@@ -575,7 +579,10 @@ module.exports = class TeslaChargerDevice extends Device {
             } else if (charge_mode === CHARGE_MODE_MANUAL_STD) {
                 await this.handleManualCharging();
             } else if (charge_mode === CHARGE_MODE_CHARGE_NOW) {
-                await this.handleChargeNow();
+                await this.handleChargeOnOff(true);
+            } else if (charge_mode === CHARGE_MODE_OFF && this._turnOffCharging) {
+                this._turnOffCharging = undefined;
+                await this.handleChargeOnOff(false);
             }
         }
     }
@@ -973,14 +980,15 @@ module.exports = class TeslaChargerDevice extends Device {
         }
     }
 
-    async handleChargeNow() {
+    async handleChargeOnOff(onOff) {
         let charging_state = this.getCapabilityValue('charging_state');
-        if (charging_state !== CHARGING_STATE_CHARGING) {
+        if (onOff && charging_state !== CHARGING_STATE_CHARGING ||
+            !onOff && charging_state === CHARGING_STATE_CHARGING) {
             try {
-                await this.getApi().controlCharging(this.getVehicleId(), true);
-                this.logger.info('handleManualCharging: started charging');
+                await this.getApi().controlCharging(this.getVehicleId(), onOff);
+                this.logger.info(`handleChargeOnOff: ${onOff ? 'started' : 'stopped'} charging`);
             } catch (err) {
-                this.logger.error('handleManualCharging', err);
+                this.logger.error('handleChargeOnOff', err);
             }
         }
     }
@@ -990,6 +998,7 @@ module.exports = class TeslaChargerDevice extends Device {
         if (charge_mode === CHARGE_MODE_CHARGE_NOW) {
             await this.setCapabilityValue('charge_mode', CHARGE_MODE_OFF);
         }
+        this._turnOffCharging = undefined;
     }
 
     async logAvailable() {
