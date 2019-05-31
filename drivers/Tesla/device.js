@@ -569,7 +569,7 @@ module.exports = class TeslaChargerDevice extends Device {
             return;
         }
         await this.trackState();
-        if (this.canHandleCharging()) {
+        if (await this.canHandleCharging()) {
             let charge_mode = this.getCapabilityValue('charge_mode');
             if (charge_mode === CHARGE_MODE_AUTOMATIC) {
                 if (!this._prices || !this._lastPriceFetch || this._lastPriceFetch.format('YYYY-MM-DD\THH') !== moment().format('YYYY-MM-DD\THH')) {
@@ -891,7 +891,7 @@ module.exports = class TeslaChargerDevice extends Device {
         this.logger.info('createChargePlanIfMissing', this._charge_plan.getChargePlan(), this._charge_plan.asText(Homey.__('device.charge_plan'), Homey.__('device.charge_hours'), Homey.__('device.cost_reduction'), settings.currency));
     }
 
-    canHandleCharging() {
+    async canHandleCharging() {
         let charging_state = this.getCapabilityValue('charging_state');
         let distance_from_home = this.getDistanceFromHome();
 
@@ -901,7 +901,10 @@ module.exports = class TeslaChargerDevice extends Device {
             charging_state === CHARGING_STATE_COMPLETE ||
             !distance_from_home ||
             distance_from_home > this.locationAccuracy) {
-            this.resetChargeModeAfterChargeNow();
+            if (charging_state !== CHARGING_STATE_COMPLETE) {
+                await this.clearExistingChargePlan();
+            }
+            await this.resetChargeModeAfterChargeNow();
             this.logger.debug(`canHandleCharging: charging state: ${charging_state}, distance from home: ${distance_from_home}`);
             return false;
         }
