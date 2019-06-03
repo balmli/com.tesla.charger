@@ -884,7 +884,7 @@ module.exports = class TeslaChargerDevice extends Device {
 
         this._charge_plan = chargePlan;
         this._charge_plan.createChargePlan();
-        await this.setCapabilityValue('planned_charge', Math.round(this._charge_plan.calculateMaxToBeCharged()));
+        await this.setCapabilityValue('planned_charge', Math.round(this._charge_plan.calculateChargeKm()));
         this._chargePlanCreatedTrigger.trigger(this, {
             charge_plan: this._charge_plan.asText(Homey.__('device.charge_plan'), Homey.__('device.charge_hours'), Homey.__('device.cost_reduction'), settings.currency)
         });

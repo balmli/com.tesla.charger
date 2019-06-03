@@ -747,7 +747,8 @@ const getConfig = function () {
         charge_km_per_hour: 28,
         battery_level: 67,
         battery_range: 332,
-        charge_limit_soc: 90
+        charge_limit_soc: 90,
+        charge_max_hours: 6
     };
 };
 
@@ -943,6 +944,27 @@ describe("Charge plan", function () {
             let config = getConfig();
             config.charge_max_hours = 10;
             expect(new ChargePlan(config, getPrices()).calculateChargeHours()).to.eql(4.07);
+        });
+    });
+
+    describe("Check calculateChargeKm", function () {
+        it("calculateChargeKm 1", function () {
+            expect(new ChargePlan(getConfig(), getPrices()).calculateChargeKm()).to.eql(113.96);
+        });
+        it("calculateChargeKm 2", function () {
+            let config = getConfig();
+            config.charge_max_hours = 4;
+            expect(new ChargePlan(config, getPrices()).calculateChargeKm()).to.eql(112);
+        });
+        it("calculateChargeKm 3", function () {
+            let config = getConfig();
+            config.charge_max_hours = 2;
+            expect(new ChargePlan(config, getPrices()).calculateChargeKm()).to.eql(56);
+        });
+        it("calculateChargeKm 4", function () {
+            let config = getConfig();
+            config.charge_max_hours = 10;
+            expect(new ChargePlan(config, getPrices()).calculateChargeKm()).to.eql(113.96);
         });
     });
 
@@ -1638,6 +1660,14 @@ describe("Charge plan", function () {
             let chargePlan = new ChargePlan(getConfig(), getPrices());
             let chPlan = chargePlan.createChargePlan(moment('2019-04-02T17:00:00+02:00'));
             expect(chargePlan.asText('Label1', 'Label2', 'Label3')).to.eql('Label1: 114 km\nLabel2: 04:04\nLabel3: 1.79 %\n00:00-01:00: 0.3583 NOK/kWh\n01:00-01:04: 0.35965 NOK/kWh\n02:00-03:00: 0.35927 NOK/kWh\n03:00-04:00: 0.35927 NOK/kWh\n04:00-05:00: 0.35609 NOK/kWh');
+        });
+        it("asText 2", function () {
+            let config = getConfig();
+            config.battery_level = 31;
+            config.battery_range = 154;
+            let chargePlan = new ChargePlan(config, getPrices());
+            let chPlan = chargePlan.createChargePlan(moment('2019-04-02T17:00:00+02:00'));
+            expect(chargePlan.asText('Label1', 'Label2', 'Label3')).to.eql('Label1: 168 km\nLabel2: 06:00\nLabel3: 0.9 %\n23:00-00:00: 0.36562 NOK/kWh\n00:00-01:00: 0.3583 NOK/kWh\n01:00-02:00: 0.35965 NOK/kWh\n02:00-03:00: 0.35927 NOK/kWh\n03:00-04:00: 0.35927 NOK/kWh\n04:00-05:00: 0.35609 NOK/kWh');
         });
     });
 
