@@ -594,18 +594,19 @@ module.exports = class TeslaChargerDevice extends Device {
             let settings = await this.getSettings();
             let lastGetAlldata = this.getStoreValue('lastGetAlldata');
 
-            let vehicleData = await this.getApi().getVehicle(vehicleId);
-            await this.handleStateData(vehicleData);
-            this.logger.info('trackState: getVehicle', vehicleData.state);
-
             if (!lastGetAlldata ||
                 (now - lastGetAlldata > settings.checkAllDataInterval * 60000) ||
                 this.getCapabilityValue('charging_state') !== CHARGING_STATE_DISCONNECTED ||
-                this._charge_plan && this._charge_plan.isInChargePeriod(moment(this._charge_plan.getStartingAt()).subtract(30, 'minutes'), moment(this._charge_plan.getEndingAt()).add(30, 'minutes'))) {
+                this._charge_plan && this._charge_plan.isInChargePeriod(moment(this._charge_plan.getStartingAt()).subtract(10, 'minutes'), moment(this._charge_plan.getEndingAt()).add(10, 'minutes'))) {
                 let allData = await this.getApi().getAlldata(vehicleId);
+                await this.handleStateData(allData);
                 await this.handleVehicleData(allData);
                 await this.setStoreValue('lastGetAlldata', now);
-                this.logger.info('trackState: getAlldata', vehicleData.state);
+                this.logger.info('trackState: getAlldata', allData.state);
+            } else {
+                let vehicleData = await this.getApi().getVehicle(vehicleId);
+                await this.handleStateData(vehicleData);
+                this.logger.info('trackState: getVehicle', vehicleData.state);
             }
         } catch (err) {
             this.handleApiError('trackState API error', err);

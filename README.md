@@ -167,6 +167,12 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.12
+
+- Fixed 'Planned charge' in 'Charge plan' token
+- Better fetching of data 
+- Charging rate, Battery range and Odometer in Insights
+
 #### 1.0.11
 
 - Will start charging instantly when selecting 'Charge now'

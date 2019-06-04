@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1292,7 +1292,7 @@
       "units": {
         "en": "km/h"
       },
-      "insights": false,
+      "insights": true,
       "desc": {
         "en": "Charging rate (km/h)"
       },
@@ -1309,7 +1309,7 @@
       "units": {
         "en": "km"
       },
-      "insights": false,
+      "insights": true,
       "desc": {
         "en": "Battery range (km)"
       },
@@ -1395,7 +1395,7 @@
       "units": {
         "en": "km"
       },
-      "insights": false,
+      "insights": true,
       "desc": {
         "en": "Odometer in kilometers (km)"
       },
