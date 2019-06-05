@@ -167,6 +167,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.13
+
+- Changes in error handling
+
 #### 1.0.12
 
 - Fixed 'Planned charge' in 'Charge plan' token
