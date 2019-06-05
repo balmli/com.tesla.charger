@@ -20,7 +20,6 @@ const CHARGE_MODE_MANUAL_STD = 'manual_std';
 const CHARGE_MODE_CHARGE_NOW = 'charge_now';
 const MAX_LOCATIONS = 10;
 const MAX_ERRORS_BEFORE_UNAVAILABLE = 5;
-const MAX_ERRORS_PERIOD_UNAVAILABLE = 5 * 60; // 5 minutes
 
 module.exports = class TeslaChargerDevice extends Device {
 
@@ -48,7 +47,6 @@ module.exports = class TeslaChargerDevice extends Device {
             await this.setCapabilityValue('charge_mode', CHARGE_MODE_OFF);
         }
         await this.getLocationAccuracy();
-        await this.setAvailable();
         await this.createTeslaApi();
         await this.updateVehicleId();
         this.addCheckCharging();
@@ -73,14 +71,6 @@ module.exports = class TeslaChargerDevice extends Device {
         this._teslaApi.on('api_error', async (reason) => {
             self.handleApiError('api_error event', reason);
         });
-    }
-
-    handleApiError(source, reason) {
-        this.apiErrors++;
-        this.logger.error(`${source}: error ${this.apiErrors} of max ${MAX_ERRORS_BEFORE_UNAVAILABLE} before unavailable.`, reason);
-        if (!this.apiErrorTimeout && this.apiErrors > MAX_ERRORS_BEFORE_UNAVAILABLE) {
-            this.addTimeoutApiErrors(MAX_ERRORS_PERIOD_UNAVAILABLE);
-        }
     }
 
     async updateVehicleId() {
@@ -141,11 +131,14 @@ module.exports = class TeslaChargerDevice extends Device {
             await self.setStoreValue('grant', grant);
             self.logger.debug('the password was refreshed OK');
         });
-        teslaSession.login().then(() => {
-            this.logAvailable();
-        }).catch(error => {
+        try {
+            await teslaSession.login();
+            if (!this.getAvailable()) {
+                await this.setAvailable();
+            }
+        } catch (err) {
             throw new Error(Homey.__('device.invalid_password'));
-        });
+        }
     }
 
     registerFlowCards() {
@@ -534,8 +527,20 @@ module.exports = class TeslaChargerDevice extends Device {
         return false;
     }
 
-    async addTimeoutApiErrors(seconds = 300) {
-        await this.setUnavailable(`Counted ${this.apiErrors} errors on API calls to vehicle. Timeout for ${seconds} seconds.`);
+    handleApiError(source, reason) {
+        if (reason === 'operation_timedout') {
+            this.addTimeoutApiErrors();
+            return;
+        }
+        this.logger.error(`${source}`, reason);
+        this.apiErrors++;
+        if (this.apiErrors >= MAX_ERRORS_BEFORE_UNAVAILABLE) {
+            this.addTimeoutApiErrors();
+        }
+    }
+
+    addTimeoutApiErrors(seconds = 300) {
+        this.apiErrors = 0;
         this.clearTimeoutApiErrors();
         this.apiErrorTimeout = setTimeout(this.apiErrorHandler.bind(this), seconds * 1000);
     }
@@ -547,8 +552,12 @@ module.exports = class TeslaChargerDevice extends Device {
         }
     }
 
-    async apiErrorHandler() {
-        await this.logAvailable();
+    apiErrorHandler() {
+        this.apiErrorTimeout = undefined;
+    }
+
+    hasApiErrorTimeout() {
+        return this.apiErrorTimeout !== undefined;
     }
 
     async addCheckCharging(minutes = 1) {
@@ -565,7 +574,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async checkCharging() {
-        if (!this.getAvailable()) {
+        if (this.hasApiErrorTimeout() || !this.getAvailable()) {
             return;
         }
         await this.trackState();
@@ -622,7 +631,6 @@ module.exports = class TeslaChargerDevice extends Device {
                 vehicle_state: new_vehicle_state
             });
         }
-        await this.logAvailable();
     }
 
     async handleVehicleData(allData) {
@@ -654,7 +662,6 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.checkGeofence(allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyMoving(allData.drive_state.speed, this.getSpeed(), allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyComplete(allData.charge_state.charging_state, prev_charging_state);
-        await this.logAvailable();
     }
 
     async charge_rate(charge_rate, charging_state, prev_charging_state) {
@@ -1003,13 +1010,6 @@ module.exports = class TeslaChargerDevice extends Device {
             await this.setCapabilityValue('charge_mode', CHARGE_MODE_OFF);
         }
         this._turnOffCharging = undefined;
-    }
-
-    async logAvailable() {
-        if (!this.getAvailable()) {
-            await this.setAvailable();
-        }
-        this.apiErrors = 0;
     }
 
 };
