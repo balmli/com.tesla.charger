@@ -94,6 +94,8 @@ The charge plan is available as a token, with information about 'km to be charge
 
 The cost reduction is calculated as the difference between 'Automatic' and 'Manual' modes in percentage, i.e. how much you save by using the automatic mode compared to manual mode.  NB! Fees and grid costs are not taken into consideration here.  Just the utility price.
 
+<img src="https://balmli.github.io/com.tesla.charger/charge_plan.jpg" width="250" height="252">
+
 ## Details about actions (then):
 
 #### Add current location to geofence
