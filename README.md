@@ -169,6 +169,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.14
+
+- Fixed no_username - bug when validating grant
+
 #### 1.0.13
 
 - Changes in error handling

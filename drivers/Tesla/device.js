@@ -57,6 +57,7 @@ module.exports = class TeslaChargerDevice extends Device {
     async createTeslaApi() {
         const self = this;
         this._teslaApi = new Tesla({
+            user: this.getStoreValue('username'),
             grant: this.getStoreValue('grant'),
             logger: this.logger
         });
