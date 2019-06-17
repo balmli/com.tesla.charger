@@ -169,6 +169,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.16
+
+- Fixed getMeterPowerStart - bug when using 'Charge now' 
+
 #### 1.0.15
 
 - Fixed no_password - bug when validating grant

@@ -796,7 +796,7 @@ module.exports = class TeslaChargerDevice extends Device {
         } else if (prev_charging_state === CHARGING_STATE_CHARGING && charging_state !== CHARGING_STATE_CHARGING) {
             this.logger.info('notifyComplete: charging stopped trigger');
             let meter_power_now = this.getCapabilityValue('meter_power');
-            let meter_power_start = this._charge_plan.getMeterPowerStart();
+            let meter_power_start = this._charge_plan ? this._charge_plan.getMeterPowerStart() : undefined;
             let meter_power = meter_power_now && meter_power_start && (meter_power_now - meter_power_start > 0) ? Math.round(100 * (meter_power_now - meter_power_start)) / 100 : 0;
 
             let complete = charging_state === CHARGING_STATE_COMPLETE ||
