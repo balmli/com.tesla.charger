@@ -173,6 +173,8 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 - only update 'Charge rate (km/h)' when charging at home
 - clear charge plan if 'Charge rate (km/h)' was changed from settings
+- added action to turn on / off max. defrost
+- added action to open / close windows 
 
 #### 1.0.16
 

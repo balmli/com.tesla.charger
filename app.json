@@ -731,6 +731,37 @@
           }
         ]
       },
+      {
+        "id": "set_preconditioning_max",
+        "title": {
+          "en": "Max defrost on / off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "OFF",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "ON",
+                "label": {
+                  "en": "On"
+                }
+              }
+            ]
+          }
+        ]
+      },
       { "id":"door_lock_control",
         "title":{
           "en":"Lock / unlock doors"
@@ -740,7 +771,8 @@
             "name": "device",
             "type": "device",
             "filter":"driver_id=Tesla"
-          },{
+          },
+          {
             "name": "lock",
             "type": "dropdown",
             "values": [
@@ -749,10 +781,41 @@
                 "label": {
                   "en": "Lock"
                 }
-              },{
+              },
+              {
                 "id": "OPEN",
                 "label": {
                   "en": "Unlock"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      { "id":"window_control",
+        "title":{
+          "en":"Open / close windows"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter":"driver_id=Tesla"
+          },
+          {
+            "name": "command",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "close",
+                "label": {
+                  "en": "Close"
+                }
+              },
+              {
+                "id": "vent",
+                "label": {
+                  "en": "Open"
                 }
               }
             ]
@@ -768,7 +831,8 @@
             "name": "device",
             "type": "device",
             "filter":"driver_id=Tesla"
-          },{
+          },
+          {
             "name": "which_trunk",
             "type": "dropdown",
             "values": [
@@ -777,7 +841,8 @@
                 "label": {
                   "en": "Front"
                 }
-              },{
+              },
+              {
                 "id": "rear",
                 "label": {
                   "en": "Rear"

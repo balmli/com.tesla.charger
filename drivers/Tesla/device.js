@@ -248,9 +248,17 @@ module.exports = class TeslaChargerDevice extends Device {
             .register()
             .registerRunListener(this.airconditionTemperature.bind(this));
 
+        new Homey.FlowCardAction('set_preconditioning_max')
+          .register()
+          .registerRunListener(this.setPreconditioningMax.bind(this));
+
         new Homey.FlowCardAction('door_lock_control')
             .register()
             .registerRunListener(this.doorLockControl.bind(this));
+
+        new Homey.FlowCardAction('window_control')
+          .register()
+          .registerRunListener(this.windowControl.bind(this));
 
         new Homey.FlowCardAction('actuate_trunk')
             .register()
@@ -387,10 +395,22 @@ module.exports = class TeslaChargerDevice extends Device {
             .catch(reason => Promise.reject(reason));
     }
 
+    setPreconditioningMax(args, state) {
+        return args.device.getApi().setPreconditioningMax(args.device.getVehicleId(), args.state === 'ON')
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
     doorLockControl(args, state) {
         return args.device.getApi().lockUnlockDoors(args.device.getVehicleId(), args.lock === 'LOCK')
             .then(response => Promise.resolve(true))
             .catch(reason => Promise.reject(reason));
+    }
+
+    windowControl(args, state) {
+        return args.device.getApi().windowControl(args.device.getVehicleId(), args.command)
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
     }
 
     actuateTrunk(args, state) {
