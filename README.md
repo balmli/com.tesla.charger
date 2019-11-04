@@ -169,6 +169,11 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.17
+
+- only update 'Charge rate (km/h)' when charging at home
+- clear charge plan if 'Charge rate (km/h)' was changed from settings
+
 #### 1.0.16
 
 - Fixed getMeterPowerStart - bug when using 'Charge now' 

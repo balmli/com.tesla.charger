@@ -93,7 +93,8 @@ module.exports = class TeslaChargerDevice extends Device {
     async onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
         if (changedKeysArr.includes('charge_start') ||
             changedKeysArr.includes('charge_end') ||
-            changedKeysArr.includes('charge_max_hours')) {
+            changedKeysArr.includes('charge_max_hours') ||
+            changedKeysArr.includes('charge_km_per_hour')) {
             this.clearExistingChargePlan();
         }
         if (changedKeysArr.includes('priceArea') ||
@@ -641,6 +642,11 @@ module.exports = class TeslaChargerDevice extends Device {
         this.min_avail_temp = allData.climate_state.min_avail_temp;
 
         let prev_charging_state = this.getCapabilityValue('charging_state');
+
+        let distance_from_home = calculateDistanceInMeters(allData.drive_state.latitude, allData.drive_state.longitude,
+          Homey.ManagerGeolocation.getLatitude(),
+          Homey.ManagerGeolocation.getLongitude());
+
         await this.setCapabilityValue('prev_charging_state', prev_charging_state).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('charging_state', allData.charge_state.charging_state).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('time_to_full_charge', allData.charge_state.time_to_full_charge).catch(err => this.logger.error('error', err));
@@ -648,16 +654,12 @@ module.exports = class TeslaChargerDevice extends Device {
 
         await this.setCapabilityValue('measure_battery', allData.charge_state.battery_level).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('battery_range', Math.round(allData.charge_state.battery_range * MILES_TO_KM)).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state)).catch(err => this.logger.error('error', err));
+        await this.setCapabilityValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state, distance_from_home)).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases)).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases)).catch(err => this.logger.error('error', err));
 
         await this.setCapabilityValue('locked', allData.vehicle_state.locked).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000).catch(err => this.logger.error('error', err));
-
-        let distance_from_home = calculateDistanceInMeters(allData.drive_state.latitude, allData.drive_state.longitude,
-            Homey.ManagerGeolocation.getLatitude(),
-            Homey.ManagerGeolocation.getLongitude());
 
         await this.notifyHome(distance_from_home, this.getDistanceFromHome());
         await this.checkGeofence(allData.drive_state.latitude, allData.drive_state.longitude);
@@ -665,7 +667,7 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.notifyComplete(allData.charge_state.charging_state, prev_charging_state);
     }
 
-    async charge_rate(charge_rate, charging_state, prev_charging_state) {
+    async charge_rate(charge_rate, charging_state, prev_charging_state, distance_from_home) {
         let chargeRateInKm = Math.round(1000 * charge_rate * MILES_TO_KM) / 1000;
 
         const now = new Date().getTime();
@@ -675,7 +677,8 @@ module.exports = class TeslaChargerDevice extends Device {
         if (chargeRateInKm > 0 &&
             (!lastCheck || now - lastCheck > CHECK_CHARGE_RATE_INTERVAL) &&
             charging_state === CHARGING_STATE_CHARGING &&
-            prev_charging_state === CHARGING_STATE_CHARGING) {
+            prev_charging_state === CHARGING_STATE_CHARGING &&
+            distance_from_home <= this.locationAccuracy) {
             await this.setSettings({
                 'charge_km_per_hour': chargeRateInKm
             });
