@@ -5,7 +5,7 @@ You can create flows with the following actions:
 - Set charge mode (Off, Automatic, Manual, Charge now)
 - Set period for charging
 - Control charging (start, stop, charge limits)
-- Control aircondition
+- Control aircondition and seat heating
 - Lock / unlock doors, trunk and frunk
 - Control Sentry mode
 - Add and delete geofences

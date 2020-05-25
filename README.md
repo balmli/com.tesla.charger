@@ -67,6 +67,8 @@ To install:
 - Set charge limit % (limit)
 - Aircondition (Off, On)
 - Aircondition temperature (temperature)
+- Seat heating
+- Steering wheel heating
 - Lock / unlock doors (Lock, Unlock)
 - Actuate trunk (Front, Rear)
 - Set Sentry Mode (Off, On)
@@ -168,6 +170,12 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.18
+
+- Added actions for 'Seat heating' and 'Steering wheel heating'.
+- Added README.txt
+- Uses Homey compose
 
 #### 1.0.17
 

@@ -916,9 +916,119 @@
         ]
       },
       {
+        "id": "set_seat_heater",
+        "title": {
+          "en": "Seat heating"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "heater",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Driver"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Passenger"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "Rear left"
+                }
+              },
+              {
+                "id": "4",
+                "label": {
+                  "en": "Rear center"
+                }
+              },
+              {
+                "id": "5",
+                "label": {
+                  "en": "Rear right"
+                }
+              }
+            ]
+          },
+          {
+            "name": "level",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Low"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "Medium"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "High"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": "set_sentry_mode",
         "title": {
           "en": "Set Sentry Mode"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "OFF",
+                "label": {
+                  "en": "Off"
+                }
+              },
+              {
+                "id": "ON",
+                "label": {
+                  "en": "On"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_steering_wheel_heater",
+        "title": {
+          "en": "Steering wheel heating"
         },
         "args": [
           {
@@ -1028,6 +1138,11 @@
         "measure_battery": {
           "title": "Battery"
         }
+      },
+      "energy": {
+        "batteries": [
+          "OTHER"
+        ]
       },
       "pair": [
         {

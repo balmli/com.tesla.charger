@@ -47,6 +47,11 @@
       "title": "Battery"
     }
   },
+  "energy": {
+    "batteries": [
+      "OTHER"
+    ]
+  },
   "pair": [
     {
       "id": "start",

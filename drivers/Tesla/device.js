@@ -252,6 +252,14 @@ module.exports = class TeslaChargerDevice extends Device {
           .register()
           .registerRunListener(this.setPreconditioningMax.bind(this));
 
+        new Homey.FlowCardAction('set_seat_heater')
+          .register()
+          .registerRunListener(this.seatHeater.bind(this));
+
+        new Homey.FlowCardAction('set_steering_wheel_heater')
+          .register()
+          .registerRunListener(this.steeringWheelHeater.bind(this));
+
         new Homey.FlowCardAction('door_lock_control')
             .register()
             .registerRunListener(this.doorLockControl.bind(this));
@@ -397,6 +405,18 @@ module.exports = class TeslaChargerDevice extends Device {
 
     setPreconditioningMax(args, state) {
         return args.device.getApi().setPreconditioningMax(args.device.getVehicleId(), args.state === 'ON')
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
+    seatHeater(args, state) {
+        return args.device.getApi().seatHeater(args.device.getVehicleId(), args.heater, args.level)
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
+    steeringWheelHeater(args, state) {
+        return args.device.getApi().steeringWheelHeater(args.device.getVehicleId(), args.state === 'ON')
           .then(response => Promise.resolve(true))
           .catch(reason => Promise.reject(reason));
     }
