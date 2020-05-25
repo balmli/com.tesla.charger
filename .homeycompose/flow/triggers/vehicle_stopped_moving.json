@@ -1,0 +1,29 @@
+{
+  "id": "vehicle_stopped_moving",
+  "title": {
+    "en": "Vehicle stopped moving"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "latitude",
+      "title": {
+        "en": "latitude"
+      },
+      "type": "number"
+    },
+    {
+      "name": "longitude",
+      "title": {
+        "en": "longitude"
+      },
+      "type": "number"
+    }
+  ]
+}

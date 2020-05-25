@@ -1,0 +1,31 @@
+{
+  "id": "window_control",
+  "title": {
+    "en": "Open / close windows"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "command",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "close",
+          "label": {
+            "en": "Close"
+          }
+        },
+        {
+          "id": "vent",
+          "label": {
+            "en": "Open"
+          }
+        }
+      ]
+    }
+  ]
+}

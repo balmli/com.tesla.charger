@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Planned charge"
+  },
+  "units": {
+    "en": "km"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Planned charge (km)"
+  },
+  "getable": true,
+  "setable": false,
+  "icon": "/drivers/Tesla/assets/planned_charge.svg"
+}

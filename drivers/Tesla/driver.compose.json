@@ -1,0 +1,74 @@
+{
+  "id": "Tesla",
+  "name": {
+    "en": "Tesla"
+  },
+  "icon": "{{driverAssetsPath}}/icon.svg",
+  "images": {
+    "large": "{{driverAssetsPath}}/images/large_s.jpg",
+    "small": "{{driverAssetsPath}}/images/small_s.jpg"
+  },
+  "class": "other",
+  "capabilities": [
+    "charge_mode",
+    "charging_state",
+    "charge_rate",
+    "battery_range",
+    "planned_charge",
+    "measure_power",
+    "meter_power",
+    "measure_temperature",
+    "measure_temperature.outside",
+    "measure_battery",
+    "prev_charging_state",
+    "time_to_full_charge",
+    "charge_limit_soc",
+    "locked",
+    "odometer",
+    "vehicle_state"
+  ],
+  "capabilitiesOptions": {
+    "measure_temperature": {
+      "title": "Inside temperature"
+    },
+    "measure_temperature.outside": {
+      "title": "Outside temperature"
+    },
+    "measure_power": {
+      "title": "Charge power"
+    },
+    "meter_power": {
+      "title": "Power meter",
+      "units": {
+        "en": "kWh"
+      }
+    },
+    "measure_battery": {
+      "title": "Battery"
+    }
+  },
+  "pair": [
+    {
+      "id": "start",
+      "template": "login_credentials",
+      "options": {
+        "logo": "pair_logo.png",
+        "usernameLabel": "Tesla account",
+        "usernamePlaceholder": "Username...",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password..."
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_vehicle"
+      }
+    },
+    {
+      "id": "add_vehicle",
+      "template": "add_devices"
+    }
+  ]
+}

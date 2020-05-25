@@ -1,0 +1,8 @@
+{
+  "id": "charge_start",
+  "type": "text",
+  "label": {
+    "en": "Charge start"
+  },
+  "value": "22:00"
+}

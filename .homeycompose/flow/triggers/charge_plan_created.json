@@ -1,0 +1,22 @@
+{
+  "id": "charge_plan_created",
+  "title": {
+    "en": "Charge plan created"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "charge_plan",
+      "title": {
+        "en": "charge_plan"
+      },
+      "type": "string"
+    }
+  ]
+}

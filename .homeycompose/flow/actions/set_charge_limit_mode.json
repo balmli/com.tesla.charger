@@ -1,0 +1,31 @@
+{
+  "id": "set_charge_limit_mode",
+  "title": {
+    "en": "Set charge limit mode"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "chargemode",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "standard",
+          "label": {
+            "en": "Standard"
+          }
+        },
+        {
+          "id": "max_range",
+          "label": {
+            "en": "Max range"
+          }
+        }
+      ]
+    }
+  ]
+}

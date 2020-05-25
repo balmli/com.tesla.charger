@@ -1,0 +1,27 @@
+{
+  "id": "set_data_fetch_interval",
+  "title": {
+    "en": "Set 'Data fetch interval'"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "data_fetch_interval",
+      "type": "number",
+      "min": 1,
+      "max:": 1440,
+      "step": 1.0,
+      "label": "minutes",
+      "title": {
+        "en": "Data fetch interval"
+      },
+      "placeholder": {
+        "en": "Data fetch interval..."
+      }
+    }
+  ]
+}

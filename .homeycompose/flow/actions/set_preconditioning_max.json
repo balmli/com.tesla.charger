@@ -1,0 +1,31 @@
+{
+  "id": "set_preconditioning_max",
+  "title": {
+    "en": "Max defrost on / off"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "OFF",
+          "label": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "ON",
+          "label": {
+            "en": "On"
+          }
+        }
+      ]
+    }
+  ]
+}

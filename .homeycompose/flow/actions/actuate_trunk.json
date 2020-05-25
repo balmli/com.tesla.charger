@@ -1,0 +1,31 @@
+{
+  "id": "actuate_trunk",
+  "title": {
+    "en": "Actuate trunk"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "which_trunk",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "front",
+          "label": {
+            "en": "Front"
+          }
+        },
+        {
+          "id": "rear",
+          "label": {
+            "en": "Rear"
+          }
+        }
+      ]
+    }
+  ]
+}

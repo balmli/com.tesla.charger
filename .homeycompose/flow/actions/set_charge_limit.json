@@ -1,0 +1,22 @@
+{
+  "id": "set_charge_limit",
+  "title": {
+    "en": "Set charge limit %"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "limit",
+      "type": "range",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "%",
+      "labelDecimals": 0
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "delete_location",
+  "title": {
+    "en": "Delete location from geofence"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "loc_no",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Location..."
+      }
+    }
+  ]
+}

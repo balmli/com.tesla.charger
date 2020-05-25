@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Battery range"
+  },
+  "units": {
+    "en": "km"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Battery range (km)"
+  },
+  "getable": true,
+  "setable": false,
+  "icon": "/drivers/Tesla/assets/battery_range.svg"
+}

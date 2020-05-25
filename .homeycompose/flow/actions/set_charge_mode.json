@@ -1,0 +1,46 @@
+{
+  "id": "set_charge_mode",
+  "title": {
+    "en": "Set charge mode"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "charge_mode",
+      "type": "dropdown",
+      "title": {
+        "en": "Charge mode"
+      },
+      "values": [
+        {
+          "id": "off",
+          "label": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "automatic",
+          "label": {
+            "en": "Automatic"
+          }
+        },
+        {
+          "id": "manual_std",
+          "label": {
+            "en": "Manual"
+          }
+        },
+        {
+          "id": "charge_now",
+          "label": {
+            "en": "Charge now"
+          }
+        }
+      ]
+    }
+  ]
+}

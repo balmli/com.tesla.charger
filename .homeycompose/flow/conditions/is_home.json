@@ -1,0 +1,13 @@
+{
+  "id": "is_home",
+  "title": {
+    "en": "Is !{{home|not home}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

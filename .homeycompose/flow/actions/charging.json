@@ -1,0 +1,31 @@
+{
+  "id": "charging",
+  "title": {
+    "en": "Charging"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "chargestate",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "OFF",
+          "label": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "ON",
+          "label": {
+            "en": "On"
+          }
+        }
+      ]
+    }
+  ]
+}

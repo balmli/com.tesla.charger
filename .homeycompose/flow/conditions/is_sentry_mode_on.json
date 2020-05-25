@@ -1,0 +1,13 @@
+{
+  "id": "is_sentry_mode_on",
+  "title": {
+    "en": "Is Sentry Mode !{{on|off}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

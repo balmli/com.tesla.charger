@@ -1,0 +1,47 @@
+{
+  "id": "com.tesla.charger",
+  "version": "1.0.18",
+  "compatibility": ">=2.0.5",
+  "sdk": 2,
+  "brandColor": "#CC0000",
+  "name": {
+    "en": "Tesla Smart Charger"
+  },
+  "description": {
+    "en": "Charge your Tesla with lowest utility prices"
+  },
+  "category": [
+    "localization"
+  ],
+  "tags": {
+    "en": [
+      "tesla",
+      "charger",
+      "charging",
+      "utility prices"
+    ]
+  },
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "permissions": [
+    "homey:manager:geolocation"
+  ],
+  "author": {
+    "name": "Bjørnar Almli",
+    "email": "bjornar.almli@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bjørnar Almli",
+        "email": "bjornar.almli@gmail.com"
+      }
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/balmli/com.tesla.charger/issues"
+  },
+  "source": "https://github.com/balmli/com.tesla.charger"
+}

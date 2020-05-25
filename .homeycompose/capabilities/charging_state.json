@@ -1,0 +1,13 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Charging state"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Charging state"
+  },
+  "getable": true,
+  "setable": false,
+  "icon": "/drivers/Tesla/assets/charging_state.svg"
+}

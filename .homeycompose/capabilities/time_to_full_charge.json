@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Time to full charge"
+  },
+  "units": {
+    "en": "h"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Time to full charge (h)"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

@@ -1,0 +1,13 @@
+{
+  "id": "meter_power_reset",
+  "title": {
+    "en": "Reset power meter"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

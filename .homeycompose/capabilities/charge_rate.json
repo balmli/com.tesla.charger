@@ -1,0 +1,17 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Charging rate"
+  },
+  "units": {
+    "en": "km/h"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Charging rate (km/h)"
+  },
+  "getable": true,
+  "setable": false,
+  "decimals": 2,
+  "icon": "/drivers/Tesla/assets/charging_rate.svg"
+}

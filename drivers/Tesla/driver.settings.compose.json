@@ -1,0 +1,70 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Charge settings"
+    },
+    "children": [
+      {
+        "$extends": "charge_start",
+        "id": "charge_start"
+      },
+      {
+        "$extends": "charge_end",
+        "id": "charge_end"
+      },
+      {
+        "$extends": "charge_max_hours",
+        "id": "charge_max_hours"
+      },
+      {
+        "$extends": "charge_km_per_hour",
+        "id": "charge_km_per_hour"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Utility price settings"
+    },
+    "children": [
+      {
+        "$extends": "priceArea",
+        "id": "priceArea"
+      },
+      {
+        "$extends": "currency",
+        "id": "currency"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Tracking settings"
+    },
+    "children": [
+      {
+        "$extends": "checkAllDataInterval",
+        "id": "checkAllDataInterval"
+      },
+      {
+        "$extends": "locationAccuracy",
+        "id": "locationAccuracy"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Account settings"
+    },
+    "children": [
+      {
+        "$extends": "password",
+        "id": "password"
+      }
+    ]
+  }
+]

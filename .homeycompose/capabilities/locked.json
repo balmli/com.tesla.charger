@@ -1,0 +1,12 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Locked"
+  },
+  "desc": {
+    "en": "Is the car locked"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

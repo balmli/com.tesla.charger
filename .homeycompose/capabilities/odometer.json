@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Odometer"
+  },
+  "units": {
+    "en": "km"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Odometer in kilometers (km)"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

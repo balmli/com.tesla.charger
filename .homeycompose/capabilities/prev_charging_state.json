@@ -1,0 +1,10 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Prev. charging state"
+  },
+  "getable": true,
+  "setable": false,
+  "insights": false,
+  "uiComponent": null
+}

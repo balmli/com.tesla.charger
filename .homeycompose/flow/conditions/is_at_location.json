@@ -1,0 +1,20 @@
+{
+  "id": "is_at_location",
+  "title": {
+    "en": "Is at location"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "loc_no",
+      "type": "autocomplete",
+      "placeholder": {
+        "en": "Location..."
+      }
+    }
+  ]
+}

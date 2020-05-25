@@ -1,0 +1,13 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Vehicle state"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Vehicle state"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

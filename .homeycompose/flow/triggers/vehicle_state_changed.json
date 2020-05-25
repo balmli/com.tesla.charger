@@ -1,0 +1,23 @@
+{
+  "id": "vehicle_state_changed",
+  "title": {
+    "en": "The vehicle state changed"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "vehicle_state",
+      "title": {
+        "en": "vehicle_state"
+      },
+      "type": "string",
+      "example": "online"
+    }
+  ]
+}

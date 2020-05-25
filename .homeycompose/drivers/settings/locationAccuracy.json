@@ -1,0 +1,13 @@
+{
+  "id": "locationAccuracy",
+  "type": "number",
+  "label": {
+    "en": "Location accuracy (meters)"
+  },
+  "value": 250,
+  "min": 10,
+  "max": 250,
+  "hint": {
+    "en": "Radius for checking if home and on locations. Default is 250 meters"
+  }
+}

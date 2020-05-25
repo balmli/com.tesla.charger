@@ -1,0 +1,13 @@
+{
+  "id": "honk_horn",
+  "title": {
+    "en": "Horn horn"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

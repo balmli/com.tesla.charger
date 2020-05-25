@@ -1,0 +1,39 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Charge mode"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Charge mode"
+  },
+  "values": [
+    {
+      "id": "off",
+      "title": {
+        "en": "Off"
+      }
+    },
+    {
+      "id": "automatic",
+      "title": {
+        "en": "Automatic"
+      }
+    },
+    {
+      "id": "manual_std",
+      "title": {
+        "en": "Manual"
+      }
+    },
+    {
+      "id": "charge_now",
+      "title": {
+        "en": "Charge now"
+      }
+    }
+  ],
+  "getable": true,
+  "setable": true,
+  "uiComponent": "picker"
+}

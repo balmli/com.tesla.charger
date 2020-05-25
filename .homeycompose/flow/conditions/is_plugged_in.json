@@ -1,0 +1,13 @@
+{
+  "id": "is_plugged_in",
+  "title": {
+    "en": "Is !{{plugged in|not plugged in}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

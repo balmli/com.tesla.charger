@@ -1,0 +1,22 @@
+{
+  "id": "aircondition_temperature",
+  "title": {
+    "en": "Aircondition temperature"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "temp",
+      "type": "range",
+      "min": 15,
+      "max": 28,
+      "step": 0.5,
+      "label": "℃",
+      "labelDecimals": 1
+    }
+  ]
+}

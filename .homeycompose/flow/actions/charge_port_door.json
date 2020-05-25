@@ -1,0 +1,31 @@
+{
+  "id": "charge_port_door",
+  "title": {
+    "en": "Charge port door"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "CLOSE",
+          "label": {
+            "en": "Close"
+          }
+        },
+        {
+          "id": "OPEN",
+          "label": {
+            "en": "Open"
+          }
+        }
+      ]
+    }
+  ]
+}

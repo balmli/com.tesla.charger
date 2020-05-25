@@ -1,0 +1,13 @@
+{
+  "id": "is_locked",
+  "title": {
+    "en": "Is !{{locked|unlocked}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

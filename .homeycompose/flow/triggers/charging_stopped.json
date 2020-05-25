@@ -1,0 +1,38 @@
+{
+  "id": "charging_stopped",
+  "title": {
+    "en": "Charging stopped"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "battery",
+      "title": {
+        "en": "battery"
+      },
+      "type": "number",
+      "example": 50
+    },
+    {
+      "name": "meter_power",
+      "title": {
+        "en": "meter_power"
+      },
+      "type": "number",
+      "example": 25
+    },
+    {
+      "name": "complete",
+      "type": "boolean",
+      "title": {
+        "en": "complete"
+      }
+    }
+  ]
+}

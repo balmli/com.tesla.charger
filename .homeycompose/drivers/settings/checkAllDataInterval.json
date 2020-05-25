@@ -1,0 +1,13 @@
+{
+  "id": "checkAllDataInterval",
+  "type": "number",
+  "label": {
+    "en": "Data fetch interval (minutes)"
+  },
+  "value": 60,
+  "min": 1,
+  "max": 1440,
+  "hint": {
+    "en": "Data fetch interval when not charging (minutes)"
+  }
+}

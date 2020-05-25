@@ -1,0 +1,31 @@
+{
+  "id": "aircondition_control",
+  "title": {
+    "en": "Aircondition"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "autoconditioningstate",
+      "type": "dropdown",
+      "values": [
+        {
+          "id": "OFF",
+          "label": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "ON",
+          "label": {
+            "en": "On"
+          }
+        }
+      ]
+    }
+  ]
+}
