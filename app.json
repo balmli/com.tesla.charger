@@ -43,6 +43,7 @@
   "bugs": {
     "url": "https://github.com/balmli/com.tesla.charger/issues"
   },
+  "homeyCommunityTopicId": 30382,
   "source": "https://github.com/balmli/com.tesla.charger",
   "flow": {
     "triggers": [
@@ -1097,8 +1098,8 @@
       },
       "icon": "/drivers/Tesla/assets/icon.svg",
       "images": {
-        "large": "/drivers/Tesla/assets/images/large_s.jpg",
-        "small": "/drivers/Tesla/assets/images/small_s.jpg"
+        "large": "/drivers/Tesla/assets/images/large.png",
+        "small": "/drivers/Tesla/assets/images/small.png"
       },
       "class": "other",
       "capabilities": [

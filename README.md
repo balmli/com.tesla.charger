@@ -171,6 +171,11 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.19
+
+- Fixed images
+- Added link to community forum
+
 #### 1.0.18
 
 - Added actions for 'Seat heating' and 'Steering wheel heating'.

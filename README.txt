@@ -16,7 +16,7 @@ It has triggers for charging and geofences, and conditions for checking if the c
 
 Use the Automatic mode for charging with lowest utility prices in the charge period.
 
-For more information, click on the community link.
+For more information, click on the link for the community forum.
 
 
 Acknowledgements:
