@@ -76,6 +76,7 @@ To install:
 - Set Sentry Mode (Off, On)
 - Reset power meter
 - Add current location to geofence (Name)
+- Add location to geofence (Name, Longitude, Latitude)
 - Delete location from geofence (Location)
 - Schedule software update
 - Cancel software update

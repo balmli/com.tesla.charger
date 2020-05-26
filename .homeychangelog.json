@@ -1,4 +1,7 @@
 {
+  "1.0.21": {
+    "en": "Add location by longitude and latitude to geofence. "
+  },
   "1.0.20": {
     "en": "Support software update. "
   },

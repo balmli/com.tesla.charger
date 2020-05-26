@@ -1,0 +1,46 @@
+{
+  "id": "add_location",
+  "title": {
+    "en": "Add location to geofence"
+  },
+  "titleFormatted": {
+    "en": "Add location '[[name]]' ([[latitude]], [[longitude]]) to geofence"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "labe": {
+        "en": "Name"
+      },
+      "placeholder": {
+        "en": "Name..."
+      }
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "title": {
+        "en": "Latitude"
+      },
+      "placeholder": {
+        "en": "Latitude..."
+      }
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "title": {
+        "en": "Longitude"
+      },
+      "placeholder": {
+        "en": "Longitude..."
+      }
+    }
+  ]
+}

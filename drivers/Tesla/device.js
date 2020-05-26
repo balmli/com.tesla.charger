@@ -18,7 +18,7 @@ const CHARGE_MODE_OFF = 'off';
 const CHARGE_MODE_AUTOMATIC = 'automatic';
 const CHARGE_MODE_MANUAL_STD = 'manual_std';
 const CHARGE_MODE_CHARGE_NOW = 'charge_now';
-const MAX_LOCATIONS = 10;
+const MAX_LOCATIONS = 20;
 const MAX_ERRORS_BEFORE_UNAVAILABLE = 5;
 
 module.exports = class TeslaChargerDevice extends Device {
@@ -298,9 +298,13 @@ module.exports = class TeslaChargerDevice extends Device {
             .register()
             .registerRunListener(this.meterPowerReset.bind(this));
 
-        new Homey.FlowCardAction('add_current_location')
+        new Homey.FlowCardAction('add_location')
             .register()
-            .registerRunListener(this.addCurrentLocation.bind(this));
+            .registerRunListener(this.addLocation.bind(this));
+
+        new Homey.FlowCardAction('add_current_location')
+          .register()
+          .registerRunListener(this.addCurrentLocation.bind(this));
 
         new Homey.FlowCardAction('delete_location')
             .register()
@@ -509,22 +513,36 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.setStoreValue(`loc_${id}`, loc);
     }
 
-    async addCurrentLocation(args, state) {
-        let j = undefined;
+    getNewLocationId() {
+        let locationId = undefined;
         for (let i = 1; i <= MAX_LOCATIONS; i++) {
             let loc = this.getLocation(i);
             if (!loc || !loc.latitude || !loc.longitude) {
-                j = i;
+                locationId = i;
                 break;
             }
         }
-        if (!j) {
+        if (!locationId) {
             throw new Error(`${Homey.__('device.max_number_of_locations_reached')} (${MAX_LOCATIONS})`);
         }
-        this.logger.info('addCurrentLocation', j);
+        return locationId;
+    }
+
+    async addLocation(args, state) {
+        const locationId = this.getNewLocationId();
+        this.logger.info('addLocation, location', locationId, args.name, args.latitude, args.longitude);
+        await this.storeLocation(locationId, {
+            name: args.name,
+            latitude: args.latitude,
+            longitude: args.longitude
+        });
+    }
+
+    async addCurrentLocation(args, state) {
+        const locationId = this.getNewLocationId();
         let allData = await this.fetchAllDataState();
-        this.logger.info('addCurrentLocation, location', j, allData.drive_state.latitude, allData.drive_state.longitude);
-        await this.storeLocation(j, {
+        this.logger.info('addCurrentLocation, location', locationId, args.name, allData.drive_state.latitude, allData.drive_state.longitude);
+        await this.storeLocation(locationId, {
             name: args.name,
             latitude: allData.drive_state.latitude,
             longitude: allData.drive_state.longitude
