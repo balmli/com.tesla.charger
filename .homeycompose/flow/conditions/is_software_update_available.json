@@ -1,0 +1,13 @@
+{
+  "id": "is_software_update_available",
+  "title": {
+    "en": "Is software update !{{available|not available}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Software version"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Software version"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

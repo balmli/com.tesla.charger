@@ -1,0 +1,22 @@
+{
+  "id": "software_update",
+  "title": {
+    "en": "Software update is available"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "version",
+      "title": {
+        "en": "version"
+      },
+      "type": "string"
+    }
+  ]
+}

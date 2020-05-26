@@ -41,6 +41,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async initDevice() {
+        await this.migrate();
         await this.setStoreValue('lastGetAlldata', 0);
         let charge_mode = this.getCapabilityValue('charge_mode');
         if (!charge_mode) {
@@ -52,6 +53,16 @@ module.exports = class TeslaChargerDevice extends Device {
         this.addCheckCharging();
 
         this.logger.silly('initDevice', this.getData().id);
+    }
+
+    async migrate() {
+        try {
+            if (!this.hasCapability('software_version')) {
+                await this.addCapability('software_version');
+            }
+        } catch (err) {
+            this.logger.error('Migration failed', err);
+        }
     }
 
     async createTeslaApi() {
@@ -174,6 +185,9 @@ module.exports = class TeslaChargerDevice extends Device {
         this._vehicleStoppedMovingTrigger = new Homey.FlowCardTriggerDevice('vehicle_stopped_moving');
         this._vehicleStoppedMovingTrigger.register();
 
+        this._softwareUpdateTrigger = new Homey.FlowCardTriggerDevice('software_update');
+        this._softwareUpdateTrigger.register();
+
         new Homey.FlowCardCondition('is_plugged_in')
             .register()
             .registerRunListener((args, state) => args.device.checkAllDataState((aState) => aState.charge_state.charging_state !== CHARGING_STATE_DISCONNECTED || false));
@@ -193,6 +207,10 @@ module.exports = class TeslaChargerDevice extends Device {
         new Homey.FlowCardCondition('is_sentry_mode_on')
             .register()
             .registerRunListener((args, state) => args.device.checkAllDataState((aState) => aState.vehicle_state.sentry_mode || false));
+
+        new Homey.FlowCardCondition('is_software_update_available')
+          .register()
+          .registerRunListener((args, state) => args.device.checkAllDataState((aState) => aState.vehicle_state.software_update && aState.vehicle_state.software_update.version.length > 0 || false));
 
         new Homey.FlowCardCondition('is_aircondition_on')
             .register()
@@ -297,6 +315,14 @@ module.exports = class TeslaChargerDevice extends Device {
         new Homey.FlowCardAction('flash_lights')
             .register()
             .registerRunListener(this.flashLights.bind(this));
+
+        new Homey.FlowCardAction('schedule_software_update')
+          .register()
+          .registerRunListener(this.scheduleSoftwareUpdate.bind(this));
+
+        new Homey.FlowCardAction('cancel_software_update')
+          .register()
+          .registerRunListener(this.cancelSoftwareUpdate.bind(this));
 
         this.registerCapabilityListener('charge_mode', async (value, opts) => {
             let oldChargeMode = this.getCapabilityValue('charge_mode');
@@ -522,6 +548,18 @@ module.exports = class TeslaChargerDevice extends Device {
             .catch(reason => Promise.reject(reason));
     }
 
+    scheduleSoftwareUpdate(args, state) {
+        return args.device.getApi().scheduleSoftwareUpdate(args.device.getVehicleId(), args.offset * 60)
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
+    cancelSoftwareUpdate(args, state) {
+        return args.device.getApi().cancelSoftwareUpdate(args.device.getVehicleId())
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
     getApi() {
         return this._teslaApi;
     }
@@ -701,6 +739,7 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.setCapabilityValue('locked', allData.vehicle_state.locked).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000).catch(err => this.logger.error('error', err));
 
+        await this.softwareVersion(allData.vehicle_state);
         await this.notifyHome(distance_from_home, this.getDistanceFromHome());
         await this.checkGeofence(allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyMoving(allData.drive_state.speed, this.getSpeed(), allData.drive_state.latitude, allData.drive_state.longitude);
@@ -751,6 +790,26 @@ module.exports = class TeslaChargerDevice extends Device {
         }
         this.logger.debug(`calcMeterPower: power: ${power} kW, calculated meter: ${meterPower} kWh`);
         return meterPower;
+    }
+
+    softwareVersion(vehicle_state) {
+        const carVersion = vehicle_state.car_version && vehicle_state.car_version.length > 0 ?
+          vehicle_state.car_version.split(' ')[0] : undefined;
+        if (this.getCapabilityValue('software_version') !== carVersion) {
+            this.setCapabilityValue('software_version', carVersion).catch(err => this.logger.error('error', err));
+        }
+
+        const softwareUpdateVersion = vehicle_state.software_update && vehicle_state.software_update.version.length > 0 ?
+          vehicle_state.software_update.version : undefined;
+
+        if (softwareUpdateVersion && carVersion !== softwareUpdateVersion && !this._softwareUpdateTriggered) {
+            this._softwareUpdateTriggered = Date.now();
+            this._softwareUpdateTrigger.trigger(this, {
+                version: softwareUpdateVersion
+            });
+        } else if (!softwareUpdateVersion || carVersion === softwareUpdateVersion) {
+            this._softwareUpdateTriggered = undefined;
+        }
     }
 
     async notifyHome(distance_from_home, prev_distance_from_home) {

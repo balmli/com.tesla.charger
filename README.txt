@@ -10,6 +10,7 @@ You can create flows with the following actions:
 - Control Sentry mode
 - Add and delete geofences
 - Set 'Data fetch interval' (polling frequency)
+- Handle software updates
 - Reset power meter
 
 It has triggers for charging and geofences, and conditions for checking if the car is plugged in the charger, is moving or at a specific geofence location.

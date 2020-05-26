@@ -43,6 +43,7 @@ To install:
 - Vehicle entered location (tokens: name, latitude, longitude)
 - Vehicle started moving (tokens: latitude, longitude)
 - Vehicle stopped moving (tokens: latitude, longitude)
+- Software update is available (token: version)
 
 #### Conditions
 
@@ -55,6 +56,7 @@ To install:
 - Is home
 - Is moving
 - Is at location (Location)
+- Is software update available
 
 #### Actions
 
@@ -75,6 +77,8 @@ To install:
 - Reset power meter
 - Add current location to geofence (Name)
 - Delete location from geofence (Location)
+- Schedule software update
+- Cancel software update
 - Honk horn
 - Flash light
 
@@ -170,6 +174,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.20
+
+- Support software update
 
 #### 1.0.19
 

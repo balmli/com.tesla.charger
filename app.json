@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -127,6 +127,28 @@
             "title": {
               "en": "complete"
             }
+          }
+        ]
+      },
+      {
+        "id": "software_update",
+        "title": {
+          "en": "Software update is available"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "version",
+            "title": {
+              "en": "version"
+            },
+            "type": "string"
           }
         ]
       },
@@ -452,6 +474,19 @@
             "filter": "driver_id=Tesla"
           }
         ]
+      },
+      {
+        "id": "is_software_update_available",
+        "title": {
+          "en": "Is software update !{{available|not available}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          }
+        ]
       }
     ],
     "actions": [
@@ -559,6 +594,19 @@
             "step": 0.5,
             "label": "℃",
             "labelDecimals": 1
+          }
+        ]
+      },
+      {
+        "id": "cancel_software_update",
+        "title": {
+          "en": "Cancel a software update"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
           }
         ]
       },
@@ -756,6 +804,34 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "schedule_software_update",
+        "title": {
+          "en": "Schedule software update"
+        },
+        "titleFormatted": {
+          "en": "Schedule a software update in [[offset]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "offset",
+            "type": "range",
+            "min": 0,
+            "max": 120,
+            "step": 1,
+            "label": " minutes",
+            "labelDecimals": 0,
+            "title": {
+              "en": "Schedule update"
+            }
           }
         ]
       },
@@ -1579,6 +1655,19 @@
       "getable": true,
       "setable": false,
       "insights": false,
+      "uiComponent": null
+    },
+    "software_version": {
+      "type": "string",
+      "title": {
+        "en": "Software version"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Software version"
+      },
+      "getable": true,
+      "setable": false,
       "uiComponent": null
     },
     "time_to_full_charge": {

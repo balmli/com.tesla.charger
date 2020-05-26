@@ -1,0 +1,28 @@
+{
+  "id": "schedule_software_update",
+  "title": {
+    "en": "Schedule software update"
+  },
+  "titleFormatted": {
+    "en": "Schedule a software update in [[offset]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "offset",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 1,
+      "label": " minutes",
+      "labelDecimals": 0,
+      "title": {
+        "en": "Schedule update"
+      }
+    }
+  ]
+}
