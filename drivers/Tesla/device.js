@@ -622,9 +622,9 @@ module.exports = class TeslaChargerDevice extends Device {
                 this.log('streaming callback error', error);
             } else if (response) {
                 this.logger.info(`Streaming: speed: ${response.speed}, odometer: ${response.odometer}, battery range: ${response.range}`);
-                this.setCapabilityValue('speed', response.speed).catch(err => this.logger.error('error', err));
-                this.setCapabilityValue('odometer', response.odometer).catch(err => this.logger.error('error', err));
-                this.setCapabilityValue('battery_range', response.range).catch(err => this.logger.error('error', err));
+                this.updateValue('speed', response.speed);
+                this.updateValue('odometer', response.odometer);
+                this.updateValue('battery_range', response.range);
             }
         });
     }
@@ -784,8 +784,8 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async handleVehicleData(allData) {
-        await this.setCapabilityValue('measure_temperature', allData.climate_state.inside_temp).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('measure_temperature.outside', allData.climate_state.outside_temp).catch(err => this.logger.error('error', err));
+        await this.updateValue('measure_temperature', allData.climate_state.inside_temp);
+        await this.updateValue('measure_temperature.outside', allData.climate_state.outside_temp);
         this.max_avail_temp = allData.climate_state.max_avail_temp;
         this.min_avail_temp = allData.climate_state.min_avail_temp;
 
@@ -795,26 +795,32 @@ module.exports = class TeslaChargerDevice extends Device {
           Homey.ManagerGeolocation.getLatitude(),
           Homey.ManagerGeolocation.getLongitude());
 
-        await this.setCapabilityValue('prev_charging_state', prev_charging_state).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('charging_state', allData.charge_state.charging_state).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('time_to_full_charge', allData.charge_state.time_to_full_charge).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('charge_limit_soc', allData.charge_state.charge_limit_soc).catch(err => this.logger.error('error', err));
+        await this.updateValue('prev_charging_state', prev_charging_state);
+        await this.updateValue('charging_state', allData.charge_state.charging_state);
+        await this.updateValue('time_to_full_charge', allData.charge_state.time_to_full_charge);
+        await this.updateValue('charge_limit_soc', allData.charge_state.charge_limit_soc);
 
-        await this.setCapabilityValue('measure_battery', allData.charge_state.battery_level).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('battery_range', Math.round(allData.charge_state.battery_range * MILES_TO_KM)).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state, distance_from_home)).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases)).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases)).catch(err => this.logger.error('error', err));
+        await this.updateValue('measure_battery', allData.charge_state.battery_level);
+        await this.updateValue('battery_range', Math.round(allData.charge_state.battery_range * MILES_TO_KM));
+        await this.updateValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state, distance_from_home));
+        await this.updateValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
+        await this.updateValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
 
-        await this.setCapabilityValue('locked', allData.vehicle_state.locked).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('speed', Math.round(allData.drive_state.speed * MILES_TO_KM)).catch(err => this.logger.error('error', err));
-        await this.setCapabilityValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000).catch(err => this.logger.error('error', err));
+        await this.updateValue('locked', allData.vehicle_state.locked);
+        await this.updateValue('speed', Math.round(allData.drive_state.speed * MILES_TO_KM));
+        await this.updateValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000);
 
         await this.softwareVersion(allData.vehicle_state);
         await this.notifyHome(distance_from_home, this.getDistanceFromHome());
         await this.checkGeofence(allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyMoving(allData.drive_state.speed, this.getSpeed(), allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyComplete(allData.charge_state.charging_state, prev_charging_state);
+    }
+
+    async updateValue(cap, toValue) {
+        if (toValue !== undefined && this.getCapabilityValue(cap) !== toValue) {
+            await this.setCapabilityValue(cap, toValue).catch(err => this.logger.error('error', err));
+        }
     }
 
     async charge_rate(charge_rate, charging_state, prev_charging_state, distance_from_home) {
@@ -866,9 +872,7 @@ module.exports = class TeslaChargerDevice extends Device {
     softwareVersion(vehicle_state) {
         const carVersion = vehicle_state.car_version && vehicle_state.car_version.length > 0 ?
           vehicle_state.car_version.split(' ')[0] : undefined;
-        if (this.getCapabilityValue('software_version') !== carVersion) {
-            this.setCapabilityValue('software_version', carVersion).catch(err => this.logger.error('error', err));
-        }
+        this.updateValue('software_version', carVersion);
 
         const softwareUpdateVersion = vehicle_state.software_update && vehicle_state.software_update.version.length > 0 ?
           vehicle_state.software_update.version : undefined;
