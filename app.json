@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1176,6 +1176,19 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "start_streaming",
+        "title": {
+          "en": "Start streaming"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
           }
         ]
       },

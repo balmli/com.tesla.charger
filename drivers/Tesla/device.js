@@ -87,9 +87,11 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async updateVehicleId() {
         try {
-            const vehicleId = await this._teslaApi.getVehicleIdByVIN(this.getData().id);
+            const { vehicleId, vehicle_id, tokens } = await this._teslaApi.getVehicleIdByVIN(this.getData().id);
             await this.setStoreValue('vehicleId', vehicleId);
-            this.logger.info(`updateVehicleId: ${vehicleId}`);
+            await this.setStoreValue('vehicle_id', vehicle_id);
+            this._teslaApi.tokens = tokens;
+            this.logger.info(`updateVehicleId: ${vehicleId}, ${vehicle_id}`);
         } catch (err) {
             this.logger.error('updateVehicleId', err);
         }
@@ -328,6 +330,10 @@ module.exports = class TeslaChargerDevice extends Device {
           .register()
           .registerRunListener(this.cancelSoftwareUpdate.bind(this));
 
+        new Homey.FlowCardAction('start_streaming')
+          .register()
+          .registerRunListener(this.startStreaming.bind(this));
+
         this.registerCapabilityListener('charge_mode', async (value, opts) => {
             let oldChargeMode = this.getCapabilityValue('charge_mode');
             this.changeChargeMode(value, oldChargeMode);
@@ -489,6 +495,10 @@ module.exports = class TeslaChargerDevice extends Device {
         return this.getStoreValue('vehicleId');
     }
 
+    getVehicle_id() {
+        return this.getStoreValue('vehicle_id');
+    }
+
     getDistanceFromHome() {
         return this.getStoreValue('distance_from_home');
     }
@@ -576,6 +586,16 @@ module.exports = class TeslaChargerDevice extends Device {
         return args.device.getApi().cancelSoftwareUpdate(args.device.getVehicleId())
           .then(response => Promise.resolve(true))
           .catch(reason => Promise.reject(reason));
+    }
+
+    startStreaming(args, state) {
+        return args.device.getApi().streamConnection(args.device.getVehicle_id(), (error, response) => {
+            if (error) {
+                args.device.log('streaming callback error', error);
+            } else if (response) {
+                args.device.log('streaming callback', response);
+            }
+        });
     }
 
     getApi() {

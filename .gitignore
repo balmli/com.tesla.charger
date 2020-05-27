@@ -11,4 +11,5 @@ node_modules/*
 !node_modules/raven
 !node_modules/stack-trace
 !node_modules/uuid
+!node_modules/ws
 test2/*
