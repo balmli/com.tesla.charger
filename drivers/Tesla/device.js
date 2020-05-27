@@ -621,6 +621,7 @@ module.exports = class TeslaChargerDevice extends Device {
             if (error) {
                 this.log('streaming callback error', error);
             } else if (response) {
+                this.logger.info(`Streaming: speed: ${response.speed}, odometer: ${response.odometer}, battery range: ${response.range}`);
                 this.setCapabilityValue('speed', response.speed).catch(err => this.logger.error('error', err));
                 this.setCapabilityValue('odometer', response.odometer).catch(err => this.logger.error('error', err));
                 this.setCapabilityValue('battery_range', response.range).catch(err => this.logger.error('error', err));
