@@ -1247,12 +1247,13 @@
         "meter_power",
         "measure_temperature",
         "measure_temperature.outside",
+        "speed",
+        "odometer",
         "measure_battery",
         "prev_charging_state",
         "time_to_full_charge",
         "charge_limit_soc",
         "locked",
-        "odometer",
         "vehicle_state"
       ],
       "capabilitiesOptions": {
@@ -1688,7 +1689,8 @@
       },
       "getable": true,
       "setable": false,
-      "uiComponent": null
+      "uiComponent": "sensor",
+      "icon": "/drivers/Tesla/assets/odometer.svg"
     },
     "planned_charge": {
       "type": "number",
@@ -1728,6 +1730,23 @@
       "getable": true,
       "setable": false,
       "uiComponent": null
+    },
+    "speed": {
+      "type": "number",
+      "title": {
+        "en": "Speed"
+      },
+      "units": {
+        "en": "km/h"
+      },
+      "insights": true,
+      "desc": {
+        "en": "Speed (km/h)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/drivers/Tesla/assets/speed.svg"
     },
     "time_to_full_charge": {
       "type": "number",

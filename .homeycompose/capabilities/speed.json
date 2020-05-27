@@ -1,17 +1,17 @@
 {
   "type": "number",
   "title": {
-    "en": "Odometer"
+    "en": "Speed"
   },
   "units": {
-    "en": "km"
+    "en": "km/h"
   },
   "insights": true,
   "desc": {
-    "en": "Odometer in kilometers (km)"
+    "en": "Speed (km/h)"
   },
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",
-  "icon": "/drivers/Tesla/assets/odometer.svg"
+  "icon": "/drivers/Tesla/assets/speed.svg"
 }

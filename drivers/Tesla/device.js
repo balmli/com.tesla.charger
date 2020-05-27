@@ -60,6 +60,9 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('software_version')) {
                 await this.addCapability('software_version');
             }
+            if (!this.hasCapability('speed')) {
+                await this.addCapability('speed');
+            }
         } catch (err) {
             this.logger.error('Migration failed', err);
         }
@@ -594,6 +597,7 @@ module.exports = class TeslaChargerDevice extends Device {
                 args.device.log('streaming callback error', error);
             } else if (response) {
                 args.device.log('streaming callback', response);
+                args.device.setCapabilityValue('speed', response.speed).catch(err => args.device.logger.error('error', err));
             }
         });
     }
@@ -775,6 +779,7 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.setCapabilityValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases)).catch(err => this.logger.error('error', err));
 
         await this.setCapabilityValue('locked', allData.vehicle_state.locked).catch(err => this.logger.error('error', err));
+        await this.setCapabilityValue('speed', Math.round(allData.drive_state.speed * MILES_TO_KM)).catch(err => this.logger.error('error', err));
         await this.setCapabilityValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000).catch(err => this.logger.error('error', err));
 
         await this.softwareVersion(allData.vehicle_state);

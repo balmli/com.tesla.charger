@@ -19,12 +19,13 @@
     "meter_power",
     "measure_temperature",
     "measure_temperature.outside",
+    "speed",
+    "odometer",
     "measure_battery",
     "prev_charging_state",
     "time_to_full_charge",
     "charge_limit_soc",
     "locked",
-    "odometer",
     "vehicle_state"
   ],
   "capabilitiesOptions": {
