@@ -116,7 +116,7 @@ The 'Vehicle entered location' and 'Vehicle left location' triggers can be used 
 
 The 'Is at location' condition can be used to check if a specific location is close to the current location.
 
-A maximum of 10 locations can be added.
+A maximum of 20 locations can be added.
 
 
 ## Details about Advanced settings:

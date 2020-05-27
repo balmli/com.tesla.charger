@@ -43,7 +43,6 @@
   "bugs": {
     "url": "https://github.com/balmli/com.tesla.charger/issues"
   },
-  "homeyCommunityTopicId": 30382,
   "source": "https://github.com/balmli/com.tesla.charger",
   "flow": {
     "triggers": [
@@ -879,29 +878,6 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=Tesla"
-          }
-        ]
-      },
-      {
-        "id": "navigation_request",
-        "title": {
-          "en": "Navigate to"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=Tesla"
-          },
-          {
-            "name": "address",
-            "type": "text",
-            "title": {
-              "en": "Address"
-            },
-            "placeholder": {
-              "en": "Address..."
-            }
           }
         ]
       },
