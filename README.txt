@@ -10,6 +10,7 @@ You can create flows with the following actions:
 - Control Sentry mode
 - Add and delete geofences
 - Set 'Data fetch interval' (polling frequency)
+- Set speed limit
 - Handle software updates
 - Reset power meter
 

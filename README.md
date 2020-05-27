@@ -78,6 +78,9 @@ To install:
 - Add current location to geofence (Name)
 - Add location to geofence (Name, Longitude, Latitude)
 - Delete location from geofence (Location)
+- Activate speed limit
+- Deactivate speed limit
+- Clear speed limit pin
 - Schedule software update
 - Cancel software update
 - Honk horn

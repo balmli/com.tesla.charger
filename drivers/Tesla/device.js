@@ -325,6 +325,14 @@ module.exports = class TeslaChargerDevice extends Device {
             .register()
             .registerRunListener(this.flashLights.bind(this));
 
+        new Homey.FlowCardAction('set_speed_limit')
+          .register()
+          .registerRunListener(this.setSpeedLimit.bind(this));
+
+        new Homey.FlowCardAction('clear_speed_limit_pin')
+          .register()
+          .registerRunListener(this.speedLimitClearPin.bind(this));
+
         new Homey.FlowCardAction('navigation_request')
           .register()
           .registerRunListener(this.navigationRequest.bind(this));
@@ -577,6 +585,21 @@ module.exports = class TeslaChargerDevice extends Device {
         return args.device.getApi().flashLights(args.device.getVehicleId())
             .then(response => Promise.resolve(true))
             .catch(reason => Promise.reject(reason));
+    }
+
+    async setSpeedLimit(args, state) {
+        if (args.state === 'ON') {
+            await args.device.getApi().speedLimitSetLimit(args.device.getVehicleId(), args.limit_kmh / MILES_TO_KM);
+        }
+        return args.device.getApi().speedLimit(args.device.getVehicleId(), args.state === 'ON', args.pin)
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
+    }
+
+    speedLimitClearPin(args, state) {
+        return args.device.getApi().speedLimitClearPin(args.device.getVehicleId(), args.pin)
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
     }
 
     navigationRequest(args, state) {

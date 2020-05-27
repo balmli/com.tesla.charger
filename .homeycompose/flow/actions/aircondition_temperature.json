@@ -16,7 +16,10 @@
       "max": 28,
       "step": 0.5,
       "label": "℃",
-      "labelDecimals": 1
+      "labelDecimals": 1,
+      "title": {
+        "en": "Temperature"
+      }
     }
   ]
 }
