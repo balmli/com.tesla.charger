@@ -854,6 +854,29 @@
         ]
       },
       {
+        "id": "navigation_request",
+        "title": {
+          "en": "Navigate to"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "address",
+            "type": "text",
+            "title": {
+              "en": "Address"
+            },
+            "placeholder": {
+              "en": "Address..."
+            }
+          }
+        ]
+      },
+      {
         "id": "schedule_software_update",
         "title": {
           "en": "Schedule software update"

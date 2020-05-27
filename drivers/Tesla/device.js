@@ -325,6 +325,10 @@ module.exports = class TeslaChargerDevice extends Device {
             .register()
             .registerRunListener(this.flashLights.bind(this));
 
+        new Homey.FlowCardAction('navigation_request')
+          .register()
+          .registerRunListener(this.navigationRequest.bind(this));
+
         new Homey.FlowCardAction('schedule_software_update')
           .register()
           .registerRunListener(this.scheduleSoftwareUpdate.bind(this));
@@ -577,6 +581,12 @@ module.exports = class TeslaChargerDevice extends Device {
         return args.device.getApi().flashLights(args.device.getVehicleId())
             .then(response => Promise.resolve(true))
             .catch(reason => Promise.reject(reason));
+    }
+
+    navigationRequest(args, state) {
+        return args.device.getApi().navigationRequest(args.device.getVehicleId(), args.address, 'en-US')
+          .then(response => Promise.resolve(true))
+          .catch(reason => Promise.reject(reason));
     }
 
     scheduleSoftwareUpdate(args, state) {
