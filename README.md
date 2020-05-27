@@ -179,6 +179,16 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.22
+
+- Added speed and odometer to sensors
+- Use streaming API for speed, odometer and battery range
+- Actions to handle speed limit
+
+#### 1.0.21
+
+- Added action for location to geofence (Name, Longitude, Latitude)
+
 #### 1.0.20
 
 - Support software update
@@ -186,7 +196,6 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 #### 1.0.19
 
 - Fixed images
-- Added link to community forum
 
 #### 1.0.18
 

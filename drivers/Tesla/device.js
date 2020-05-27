@@ -333,10 +333,6 @@ module.exports = class TeslaChargerDevice extends Device {
           .register()
           .registerRunListener(this.speedLimitClearPin.bind(this));
 
-        new Homey.FlowCardAction('navigation_request')
-          .register()
-          .registerRunListener(this.navigationRequest.bind(this));
-
         new Homey.FlowCardAction('schedule_software_update')
           .register()
           .registerRunListener(this.scheduleSoftwareUpdate.bind(this));
