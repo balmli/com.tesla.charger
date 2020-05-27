@@ -337,10 +337,6 @@ module.exports = class TeslaChargerDevice extends Device {
           .register()
           .registerRunListener(this.cancelSoftwareUpdate.bind(this));
 
-        new Homey.FlowCardAction('start_streaming')
-          .register()
-          .registerRunListener(this.startStreaming.bind(this));
-
         this.registerCapabilityListener('charge_mode', async (value, opts) => {
             let oldChargeMode = this.getCapabilityValue('charge_mode');
             this.changeChargeMode(value, oldChargeMode);
@@ -601,13 +597,14 @@ module.exports = class TeslaChargerDevice extends Device {
           .catch(reason => Promise.reject(reason));
     }
 
-    startStreaming(args, state) {
-        return args.device.getApi().streamConnection(args.device.getVehicle_id(), (error, response) => {
+    doStartStreaming() {
+        return this.getApi().streamConnection(this.getVehicle_id(), (error, response) => {
             if (error) {
-                args.device.log('streaming callback error', error);
+                this.log('streaming callback error', error);
             } else if (response) {
-                args.device.log('streaming callback', response);
-                args.device.setCapabilityValue('speed', response.speed).catch(err => args.device.logger.error('error', err));
+                this.setCapabilityValue('speed', response.speed).catch(err => this.logger.error('error', err));
+                this.setCapabilityValue('odometer', response.odometer).catch(err => this.logger.error('error', err));
+                this.setCapabilityValue('battery_range', response.range).catch(err => this.logger.error('error', err));
             }
         });
     }
@@ -743,6 +740,7 @@ module.exports = class TeslaChargerDevice extends Device {
                 await this.handleStateData(allData);
                 await this.handleVehicleData(allData);
                 await this.setStoreValue('lastGetAlldata', now);
+                this.doStartStreaming();
                 this.logger.info('trackState: getAlldata', allData.state);
             } else {
                 let vehicleData = await this.getApi().getVehicle(vehicleId);
