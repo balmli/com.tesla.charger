@@ -1,4 +1,10 @@
 {
+  "1.0.23": {
+    "en": "Improved error handling. "
+  },
+  "1.0.22": {
+    "en": "Added speed and odometer to sensors. Use streaming API for speed, odometer and battery range. Actions to handle speed limit. "
+  },
   "1.0.21": {
     "en": "Add location by longitude and latitude to geofence. "
   },

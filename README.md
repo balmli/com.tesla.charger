@@ -179,6 +179,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.23
+
+- Improved error handling
+
 #### 1.0.22
 
 - Added speed and odometer to sensors
