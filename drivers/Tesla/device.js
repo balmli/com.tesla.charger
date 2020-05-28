@@ -50,7 +50,7 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.getLocationAccuracy();
         await this.createTeslaApi();
         await this.updateVehicleId();
-        this.addCheckCharging();
+        await this.checkCharging();
 
         this.logger.silly('initDevice', this.getData().id);
     }
@@ -94,9 +94,9 @@ module.exports = class TeslaChargerDevice extends Device {
             await this.setStoreValue('vehicleId', vehicleId);
             await this.setStoreValue('vehicle_id', vehicle_id);
             this._teslaApi.tokens = tokens;
-            this.logger.info(`updateVehicleId: ${vehicleId}, ${vehicle_id}`);
+            this.logger.info(`Update vehicleId: ${vehicleId}, ${vehicle_id}`);
         } catch (err) {
-            this.logger.error('updateVehicleId', err);
+            this.logger.error('Update vehicleId', err);
         }
     }
 
@@ -376,7 +376,7 @@ module.exports = class TeslaChargerDevice extends Device {
         if (newChargeMode === CHARGE_MODE_CHARGE_NOW || oldChargeMode === CHARGE_MODE_CHARGE_NOW) {
             await this.setStoreValue('lastGetAlldata', 0);
             this._turnOffCharging = oldChargeMode === CHARGE_MODE_CHARGE_NOW;
-            this.addCheckCharging();
+            this.checkCharging();
         }
     }
 
@@ -616,19 +616,6 @@ module.exports = class TeslaChargerDevice extends Device {
           .catch(reason => Promise.reject(reason));
     }
 
-    doStartStreaming() {
-        return this.getApi().streamConnection(this.getVehicle_id(), (error, response) => {
-            if (error) {
-                this.log('streaming callback error', error);
-            } else if (response) {
-                this.logger.info(`Streaming: speed: ${response.speed}, odometer: ${response.odometer}, battery range: ${response.range}`);
-                this.updateValue('speed', response.speed);
-                this.updateValue('odometer', response.odometer);
-                this.updateValue('battery_range', response.range);
-            }
-        });
-    }
-
     getApi() {
         return this._teslaApi;
     }
@@ -677,6 +664,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     handleApiError(source, reason) {
+        this.logger.error(`handleApiError: source: ${source}`, reason);
         if (reason === 'operation_timedout') {
             this.addTimeoutApiErrors();
             return;
@@ -688,10 +676,11 @@ module.exports = class TeslaChargerDevice extends Device {
         }
     }
 
-    addTimeoutApiErrors(seconds = 300) {
+    addTimeoutApiErrors(seconds = 60) {
         this.apiErrors = 0;
         this.clearTimeoutApiErrors();
         this.apiErrorTimeout = setTimeout(this.apiErrorHandler.bind(this), seconds * 1000);
+        this.logger.error(`addTimeoutApiErrors: added timeout in ${seconds} seconds`);
     }
 
     clearTimeoutApiErrors() {
@@ -706,13 +695,13 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     hasApiErrorTimeout() {
-        return this.apiErrorTimeout !== undefined;
+        return !!this.apiErrorTimeout;
     }
 
-    async addCheckCharging(minutes = 1) {
+    async scheduleCheckCharging(minutes = 1) {
         this.clearCheckCharging();
-        await this.checkCharging();
-        this.checkChargingInterval = setInterval(this.checkCharging.bind(this), minutes * 60 * 1000);
+        this.checkChargingInterval = setTimeout(this.checkCharging.bind(this), minutes * 60 * 1000);
+        this.logger.debug(`scheduleCheckCharging: scheduled checkCharging in ${minutes * 60} seconds`);
     }
 
     clearCheckCharging() {
@@ -723,25 +712,37 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async checkCharging() {
-        if (this.hasApiErrorTimeout() || !this.getAvailable()) {
-            return;
-        }
-        await this.trackState();
-        if (await this.canHandleCharging()) {
-            let charge_mode = this.getCapabilityValue('charge_mode');
-            if (charge_mode === CHARGE_MODE_AUTOMATIC) {
-                if (!this._prices || !this._lastPriceFetch || this._lastPriceFetch.format('YYYY-MM-DD\THH') !== moment().format('YYYY-MM-DD\THH')) {
-                    await this.fetchPrices();
-                }
-                await this.handleAutomaticCharging();
-            } else if (charge_mode === CHARGE_MODE_MANUAL_STD) {
-                await this.handleManualCharging();
-            } else if (charge_mode === CHARGE_MODE_CHARGE_NOW) {
-                await this.handleChargeOnOff(true);
-            } else if (charge_mode === CHARGE_MODE_OFF && this._turnOffCharging) {
-                this._turnOffCharging = undefined;
-                await this.handleChargeOnOff(false);
+        try {
+            this.clearCheckCharging();
+            if (!this.getAvailable()) {
+                this.logger.info(`checkCharging: skip due to unavailable device`);
+                return;
             }
+            if (this.hasApiErrorTimeout()) {
+                this.logger.info(`checkCharging: skip due to apiErrors: ${this.apiErrors}`);
+                return;
+            }
+            await this.trackState();
+            if (await this.canHandleCharging()) {
+                let charge_mode = this.getCapabilityValue('charge_mode');
+                if (charge_mode === CHARGE_MODE_AUTOMATIC) {
+                    if (!this._prices || !this._lastPriceFetch || this._lastPriceFetch.format('YYYY-MM-DD\THH') !== moment().format('YYYY-MM-DD\THH')) {
+                        await this.fetchPrices();
+                    }
+                    await this.handleAutomaticCharging();
+                } else if (charge_mode === CHARGE_MODE_MANUAL_STD) {
+                    await this.handleManualCharging();
+                } else if (charge_mode === CHARGE_MODE_CHARGE_NOW) {
+                    await this.handleChargeOnOff(true);
+                } else if (charge_mode === CHARGE_MODE_OFF && this._turnOffCharging) {
+                    this._turnOffCharging = undefined;
+                    await this.handleChargeOnOff(false);
+                }
+            }
+        } catch (err) {
+            this.logger.error('checkCharging error', err);
+        } finally {
+            this.scheduleCheckCharging();
         }
     }
 
@@ -760,12 +761,12 @@ module.exports = class TeslaChargerDevice extends Device {
                 await this.handleStateData(allData);
                 await this.handleVehicleData(allData);
                 await this.setStoreValue('lastGetAlldata', now);
-                this.doStartStreaming();
-                this.logger.info('trackState: getAlldata', allData.state);
+                await this.startStreaming();
+                this.logger.info(`Track all data: state: ${allData.state}`);
             } else {
                 let vehicleData = await this.getApi().getVehicle(vehicleId);
                 await this.handleStateData(vehicleData);
-                this.logger.info('trackState: getVehicle', vehicleData.state);
+                this.logger.info(`Track vehicle data: state: ${vehicleData.state}`);
             }
         } catch (err) {
             this.handleApiError('trackState API error', err);
@@ -791,30 +792,56 @@ module.exports = class TeslaChargerDevice extends Device {
 
         let prev_charging_state = this.getCapabilityValue('charging_state');
 
-        let distance_from_home = calculateDistanceInMeters(allData.drive_state.latitude, allData.drive_state.longitude,
-          Homey.ManagerGeolocation.getLatitude(),
-          Homey.ManagerGeolocation.getLongitude());
+        const { distance_from_home } = await this.handleResponse('REST API', {
+            speed: allData.drive_state.speed,
+            odometer: allData.vehicle_state.odometer,
+            range: allData.charge_state.battery_range,
+            latitude: allData.drive_state.latitude,
+            longitude: allData.drive_state.longitude
+        });
 
         await this.updateValue('prev_charging_state', prev_charging_state);
         await this.updateValue('charging_state', allData.charge_state.charging_state);
         await this.updateValue('time_to_full_charge', allData.charge_state.time_to_full_charge);
         await this.updateValue('charge_limit_soc', allData.charge_state.charge_limit_soc);
-
         await this.updateValue('measure_battery', allData.charge_state.battery_level);
-        await this.updateValue('battery_range', Math.round(allData.charge_state.battery_range * MILES_TO_KM));
         await this.updateValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state, distance_from_home));
         await this.updateValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
         await this.updateValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
-
         await this.updateValue('locked', allData.vehicle_state.locked);
-        await this.updateValue('speed', Math.round(allData.drive_state.speed * MILES_TO_KM));
-        await this.updateValue('odometer', Math.round(1000 * allData.vehicle_state.odometer * MILES_TO_KM) / 1000);
 
         await this.softwareVersion(allData.vehicle_state);
-        await this.notifyHome(distance_from_home, this.getDistanceFromHome());
-        await this.checkGeofence(allData.drive_state.latitude, allData.drive_state.longitude);
-        await this.notifyMoving(allData.drive_state.speed, this.getSpeed(), allData.drive_state.latitude, allData.drive_state.longitude);
         await this.notifyComplete(allData.charge_state.charging_state, prev_charging_state);
+    }
+
+    startStreaming() {
+        return this.getApi().streamConnection(this.getVehicle_id(), (error, response) => {
+            if (response) {
+                this.handleResponse('Streaming', response);
+            }
+        });
+    }
+
+    async handleResponse(prefix, response) {
+        const speed = Math.round(response.speed * MILES_TO_KM);
+        const odometer = Math.round(1000 * response.odometer * MILES_TO_KM) / 1000;
+        const range = Math.round(response.range * MILES_TO_KM);
+
+        const distance_from_home = calculateDistanceInMeters(response.latitude, response.longitude,
+          Homey.ManagerGeolocation.getLatitude(),
+          Homey.ManagerGeolocation.getLongitude());
+
+        this.logger.info(`${prefix} response: speed: ${speed}, odometer: ${odometer}, battery range: ${range}, distance from home: ${distance_from_home} meters`);
+
+        await this.updateValue('speed', speed);
+        await this.updateValue('odometer', odometer);
+        await this.updateValue('battery_range', range);
+
+        await this.notifyHome(distance_from_home, this.getDistanceFromHome());
+        await this.checkGeofence(response.latitude, response.longitude);
+        await this.notifyMoving(speed, this.getSpeed(), response.latitude, response.longitude);
+
+        return { speed, odometer, range, distance_from_home };
     }
 
     async updateValue(cap, toValue) {
@@ -913,11 +940,11 @@ module.exports = class TeslaChargerDevice extends Device {
             let loc = this.getLocation(i);
             if (loc && loc.latitude && loc.longitude) {
                 let distance = calculateDistanceInMeters(latitude, longitude, loc.latitude, loc.longitude);
-                this.logger.info(`checkGeofence: ${i}`, loc, `distance: ${distance}`);
+                this.logger.debug(`checkGeofence: ${i}`, loc, `distance: ${distance}`);
                 if (loc.prev_distance) {
                     if (loc.prev_distance > this.locationAccuracy &&
                         distance <= this.locationAccuracy) {
-                        this.logger.info(`checkGeofence: entered location: ${i}`, loc, distance);
+                        this.logger.debug(`checkGeofence: entered location: ${i}`, loc, distance);
                         this._vehicleEnteredLocationTrigger.trigger(this, {
                             name: loc.name ? loc.name : '' + i,
                             latitude: latitude,
@@ -926,7 +953,7 @@ module.exports = class TeslaChargerDevice extends Device {
                     }
                     if (loc.prev_distance <= this.locationAccuracy &&
                         distance > this.locationAccuracy) {
-                        this.logger.info(`checkGeofence: left location: ${i}`, loc, distance);
+                        this.logger.debug(`checkGeofence: left location: ${i}`, loc, distance);
                         this._vehicleLeftLocationTrigger.trigger(this, {
                             name: loc.name ? loc.name : '' + i,
                             latitude: latitude,
