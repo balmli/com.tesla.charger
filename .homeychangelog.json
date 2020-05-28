@@ -1,4 +1,7 @@
 {
+  "1.0.24": {
+    "en": "Added navigation request. "
+  },
   "1.0.23": {
     "en": "Improved error handling. "
   },

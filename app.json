@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -878,6 +878,39 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=Tesla"
+          }
+        ]
+      },
+      {
+        "id": "navigation_request",
+        "title": {
+          "en": "Navigate to"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Tesla"
+          },
+          {
+            "name": "address",
+            "type": "text",
+            "title": {
+              "en": "Address"
+            },
+            "placeholder": {
+              "en": "Address..."
+            }
+          },
+          {
+            "name": "google_maps_link",
+            "type": "text",
+            "title": {
+              "en": "Google Maps link"
+            },
+            "placeholder": {
+              "en": "Google Maps link..."
+            }
           }
         ]
       },

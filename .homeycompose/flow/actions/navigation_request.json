@@ -1,0 +1,34 @@
+{
+  "id": "navigation_request",
+  "title": {
+    "en": "Navigate to"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Tesla"
+    },
+    {
+      "name": "address",
+      "type": "text",
+      "title": {
+        "en": "Address"
+      },
+      "placeholder": {
+        "en": "Address..."
+      }
+    },
+    {
+      "name": "google_maps_link",
+      "type": "text",
+      "title": {
+        "en": "Google Maps link"
+      },
+      "placeholder": {
+        "en": "Google Maps link..."
+      }
+    }
+
+  ]
+}

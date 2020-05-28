@@ -78,6 +78,7 @@ To install:
 - Add current location to geofence (Name)
 - Add location to geofence (Name, Longitude, Latitude)
 - Delete location from geofence (Location)
+- Navigate to (Address, Google Maps url)
 - Activate speed limit
 - Deactivate speed limit
 - Clear speed limit pin
@@ -178,6 +179,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.24
+
+- Added navigation request
 
 #### 1.0.23
 
