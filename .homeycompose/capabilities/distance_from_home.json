@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Distance from home"
+  },
+  "units": {
+    "en": "m"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Distance from home (meters)"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

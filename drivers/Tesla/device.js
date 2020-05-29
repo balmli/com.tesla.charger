@@ -63,6 +63,9 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('speed')) {
                 await this.addCapability('speed');
             }
+            if (!this.hasCapability('distance_from_home')) {
+                await this.addCapability('distance_from_home');
+            }
         } catch (err) {
             this.logger.error('Migration failed', err);
         }
@@ -510,22 +513,6 @@ module.exports = class TeslaChargerDevice extends Device {
         return this.getStoreValue('vehicle_id');
     }
 
-    getDistanceFromHome() {
-        return this.getStoreValue('distance_from_home');
-    }
-
-    async setDistanceFromHome(distance) {
-        await this.setStoreValue('distance_from_home', distance);
-    }
-
-    getSpeed() {
-        return this.getStoreValue('speed');
-    }
-
-    async setSpeed(speed) {
-        await this.setStoreValue('speed', speed);
-    }
-
     getLocation(id) {
         return this.getStoreValue(`loc_${id}`);
     }
@@ -837,13 +824,16 @@ module.exports = class TeslaChargerDevice extends Device {
 
         this.logger.info(`${prefix} response: speed: ${speed}, odometer: ${odometer}, battery range: ${range}, distance from home: ${distance_from_home} meters`);
 
+        const prev_speed = this.getCapabilityValue('speed');
         await this.updateValue('speed', speed);
         await this.updateValue('odometer', odometer);
         await this.updateValue('battery_range', range);
+        const prev_distance_from_home = this.getCapabilityValue('speed');
+        await this.updateValue('distance_from_home', distance_from_home);
 
-        await this.notifyHome(distance_from_home, this.getDistanceFromHome());
+        await this.notifyMoving(speed, prev_speed, response.latitude, response.longitude);
+        await this.notifyHome(distance_from_home, prev_distance_from_home);
         await this.checkGeofence(response.latitude, response.longitude);
-        await this.notifyMoving(speed, this.getSpeed(), response.latitude, response.longitude);
 
         return { speed, odometer, range, distance_from_home };
     }
@@ -922,7 +912,6 @@ module.exports = class TeslaChargerDevice extends Device {
         if (!distance_from_home || distance_from_home < 0) {
             distance_from_home = 0;
         }
-        await this.setDistanceFromHome(distance_from_home).catch(err => this.logger.error('error', err));
         if (prev_distance_from_home > this.locationAccuracy &&
             distance_from_home <= this.locationAccuracy) {
             this._vehicleCameHomeTrigger.trigger(this, {
@@ -975,7 +964,6 @@ module.exports = class TeslaChargerDevice extends Device {
         if (!speed || speed < 0) {
             speed = 0;
         }
-        await this.setSpeed(speed).catch(err => this.logger.error('error', err));
         if (speed > 0 && prev_speed === 0) {
             this.logger.info('notifyMoving: started moving', speed, latitude, longitude);
             this._vehicleStartedMovingTrigger.trigger(this, {
@@ -1110,7 +1098,7 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async canHandleCharging() {
         let charging_state = this.getCapabilityValue('charging_state');
-        let distance_from_home = this.getDistanceFromHome();
+        let distance_from_home = this.getCapabilityValue('distance_from_home');
 
         // Disconnected, complete or not home ?
         if (!charging_state ||
