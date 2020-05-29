@@ -87,6 +87,7 @@ To install:
 - Honk horn
 - Flash light
 
+
 ## Details about triggers (when):
 
 #### Charging started / stopped
@@ -107,6 +108,7 @@ The cost reduction is calculated as the difference between 'Automatic' and 'Manu
 
 <img src="https://balmli.github.io/com.tesla.charger/charge_plan.jpg" width="250" height="252">
 
+
 ## Details about actions (then):
 
 #### Add current location to geofence
@@ -118,6 +120,16 @@ The 'Vehicle entered location' and 'Vehicle left location' triggers can be used 
 The 'Is at location' condition can be used to check if a specific location is close to the current location.
 
 A maximum of 20 locations can be added.
+
+#### Navigate to (Address, Google Maps url)
+
+To start navigation, both an address and a Google Maps URL must be provided. 
+
+##### Example:
+
+Address: Rigtersbleek-Zandvoort 10, 7521 BE Enschede, Nederland 
+
+Google Maps URL: https://goo.gl/maps/dKVsJZQrgpVNGTQr6
 
 
 ## Details about Advanced settings:
@@ -179,6 +191,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.25
+
+- Minor bugfix
 
 #### 1.0.24
 

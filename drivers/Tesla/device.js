@@ -36,8 +36,8 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async onInit() {
         super.onInit();
+        await this.registerFlowCards();
         await this.initDevice();
-        this.registerFlowCards();
     }
 
     async initDevice() {
@@ -159,7 +159,7 @@ module.exports = class TeslaChargerDevice extends Device {
         }
     }
 
-    registerFlowCards() {
+    async registerFlowCards() {
         this._chargingStartedTrigger = new Homey.FlowCardTriggerDevice('charging_started');
         this._chargingStartedTrigger.register();
 
