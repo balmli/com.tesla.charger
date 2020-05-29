@@ -1767,6 +1767,22 @@
       "setable": false,
       "icon": "/drivers/Tesla/assets/charging_state.svg"
     },
+    "distance_from_home": {
+      "type": "number",
+      "title": {
+        "en": "Distance from home"
+      },
+      "units": {
+        "en": "m"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Distance from home (meters)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
     "locked": {
       "type": "boolean",
       "title": {
