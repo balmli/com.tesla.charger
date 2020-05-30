@@ -11,6 +11,7 @@ const moment = require('moment'),
 
 const MILES_TO_KM = 1.609344;
 const CHECK_CHARGE_RATE_INTERVAL = 86400000; // Every day
+const VEHICLE_STATE_ONLINE = 'online';
 const CHARGING_STATE_DISCONNECTED = 'Disconnected';
 const CHARGING_STATE_CHARGING = 'Charging';
 const CHARGING_STATE_COMPLETE = 'Complete';
@@ -93,10 +94,9 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async updateVehicleId() {
         try {
-            const { vehicleId, vehicle_id, tokens } = await this._teslaApi.getVehicleIdByVIN(this.getData().id);
+            const { vehicleId, vehicle_id } = await this._teslaApi.getVehicleIdByVIN(this.getData().id);
             await this.setStoreValue('vehicleId', vehicleId);
             await this.setStoreValue('vehicle_id', vehicle_id);
-            this._teslaApi.tokens = tokens;
             this.logger.info(`Update vehicleId: ${vehicleId}, ${vehicle_id}`);
         } catch (err) {
             this.logger.error('Update vehicleId', err);
@@ -752,7 +752,7 @@ module.exports = class TeslaChargerDevice extends Device {
                 await this.handleStateData(allData);
                 await this.handleVehicleData(allData);
                 await this.setStoreValue('lastGetAlldata', now);
-                await this.startStreaming();
+                await this.startStreaming(allData.tokens, allData.state, allData.vehicle_state.is_user_present);
                 this.logger.info(`Track all data: state: ${allData.state}`);
             } else {
                 let vehicleData = await this.getApi().getVehicle(vehicleId);
@@ -805,8 +805,12 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.notifyComplete(allData.charge_state.charging_state, prev_charging_state);
     }
 
-    startStreaming() {
-        return this.getApi().streamConnection(this.getVehicle_id(), (error, response) => {
+    startStreaming(tokens, state, is_user_present) {
+        if (state !== VEHICLE_STATE_ONLINE || !is_user_present) {
+            this.logger.debug('Start streaming: will not start', state, is_user_present);
+            return;
+        }
+        return this.getApi().streamConnection(this.getVehicle_id(), tokens, (error, response) => {
             if (response) {
                 this.handleResponse('Streaming', response);
             }
