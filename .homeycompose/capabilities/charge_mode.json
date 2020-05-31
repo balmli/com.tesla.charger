@@ -15,9 +15,9 @@
       }
     },
     {
-      "id": "automatic",
+      "id": "charge_now",
       "title": {
-        "en": "Automatic"
+        "en": "Charge now"
       }
     },
     {
@@ -27,9 +27,9 @@
       }
     },
     {
-      "id": "charge_now",
+      "id": "automatic",
       "title": {
-        "en": "Charge now"
+        "en": "Automatic"
       }
     }
   ],

@@ -1,24 +1,7 @@
 # Tesla Smart Charger
 
-This is an alternative to the '[Tesla app](https://apps.athom.com/app/com.tesla)' in the app store, but with focus on charging the Tesla.  Much of the code in this app is borrowed from that app, written by Erik van Dongen.
+This is an alternative to the [Tesla app](https://apps.athom.com/app/com.tesla) in the app store.
 
-When the Tesla is plugged in the charger and home, the app will handle the charging. 
-
-#### Mode: Automatic
-
-Will handle charging in the 'charge period', and will charge when utility prices are low. To charge when the prices are low, just a few of all the hours in the period must be used for charging.  So to get the lowest prices, it is better to charge the car every night.
-
-#### Mode: Manual
-
-Will handle charging in the 'charge period', but does not require utility prices.
-
-#### Mode: Charge now
-
-Will start charging instantly.  After the charging is complete, or the charger is unplugged, the mode will switch automatically to 'Off'.
-
-#### Mode: Off
-
-Will not handle any charging, but charging can be controlled by flows.
 
 ## Install:
 
@@ -86,6 +69,25 @@ To install:
 - Cancel software update
 - Honk horn
 - Flash light
+
+
+## Modes:
+
+#### Mode: Off
+
+Will not handle any charging, but charging can be controlled by flows.
+
+#### Mode: Charge now
+
+Will start charging instantly.  After the charging is complete, or the charger is unplugged, the mode will switch automatically to 'Off'.
+
+#### Mode: Manual
+
+Will handle charging in the 'charge period', but does not require utility prices.
+
+#### Mode: Automatic
+
+Will handle charging in the 'charge period', and will charge when utility prices are low. To charge when the prices are low, just a few of all the hours in the period must be used for charging.  So to get the lowest prices, it is better to charge the car every night.
 
 
 ## Details about triggers (when):
