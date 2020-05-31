@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1715,9 +1715,9 @@
           }
         },
         {
-          "id": "automatic",
+          "id": "charge_now",
           "title": {
-            "en": "Automatic"
+            "en": "Charge now"
           }
         },
         {
@@ -1727,9 +1727,9 @@
           }
         },
         {
-          "id": "charge_now",
+          "id": "automatic",
           "title": {
-            "en": "Charge now"
+            "en": "Automatic"
           }
         }
       ],
