@@ -1,4 +1,7 @@
 {
+  "1.0.28": {
+    "en": "Fixed timestamp check for calculating meter power. "
+  },
   "1.0.27": {
     "en": "Minor fixes. "
   },

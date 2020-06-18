@@ -886,7 +886,7 @@ module.exports = class TeslaChargerDevice extends Device {
         // kW
         let power = this.calcMeasurePower(current, voltage, phases) / 1000;
 
-        if (lastCheck !== undefined) {
+        if (lastCheck !== undefined && lastCheck !== null) {
             let diff_ms = now - lastCheck;
             meterPower += Math.round(100 * power * diff_ms / 3600000) / 100;
         }
