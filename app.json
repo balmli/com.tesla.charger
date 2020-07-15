@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1803,7 +1803,7 @@
       "units": {
         "en": "km"
       },
-      "insights": true,
+      "insights": false,
       "desc": {
         "en": "Odometer in kilometers (km)"
       },
@@ -1859,7 +1859,7 @@
       "units": {
         "en": "km/h"
       },
-      "insights": true,
+      "insights": false,
       "desc": {
         "en": "Speed (km/h)"
       },

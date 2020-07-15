@@ -1,4 +1,7 @@
 {
+  "1.0.29": {
+    "en": "Speed and odometer is not saved to Insights. "
+  },
   "1.0.28": {
     "en": "Fixed timestamp check for calculating meter power. "
   },

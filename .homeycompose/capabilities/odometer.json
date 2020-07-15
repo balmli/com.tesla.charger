@@ -6,7 +6,7 @@
   "units": {
     "en": "km"
   },
-  "insights": true,
+  "insights": false,
   "desc": {
     "en": "Odometer in kilometers (km)"
   },

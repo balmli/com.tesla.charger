@@ -6,7 +6,7 @@
   "units": {
     "en": "km/h"
   },
-  "insights": true,
+  "insights": false,
   "desc": {
     "en": "Speed (km/h)"
   },

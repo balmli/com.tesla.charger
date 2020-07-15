@@ -194,6 +194,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.29
+
+- Speed and odometer is not saved to Insights
+
 #### 1.0.28
 
 - Fixed timestamp check for calculating meter power

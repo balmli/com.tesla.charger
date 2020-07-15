@@ -67,6 +67,14 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('distance_from_home')) {
                 await this.addCapability('distance_from_home');
             }
+            const migVersion = this.getStoreValue('version');
+            if (!migVersion || migVersion < 1) {
+                await this.removeCapability('odometer');
+                await this.addCapability('odometer');
+                await this.removeCapability('speed');
+                await this.addCapability('speed');
+            }
+            await this.setStoreValue('version', 1);
         } catch (err) {
             this.logger.error('Migration failed', err);
         }
