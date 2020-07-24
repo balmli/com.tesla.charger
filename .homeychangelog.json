@@ -1,4 +1,7 @@
 {
+  "1.0.30": {
+    "en": "Added latitude and longitude as capabilities. "
+  },
   "1.0.29": {
     "en": "Speed and odometer is not saved to Insights. "
   },

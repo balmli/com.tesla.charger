@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Longitude"
+  },
+  "units": {
+    "en": "lon"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Longitude"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": null
+}

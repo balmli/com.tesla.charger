@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1783,6 +1783,22 @@
       "setable": false,
       "uiComponent": null
     },
+    "latitude": {
+      "type": "number",
+      "title": {
+        "en": "Latitude"
+      },
+      "units": {
+        "en": "lat"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Latitude"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
     "locked": {
       "type": "boolean",
       "title": {
@@ -1790,6 +1806,22 @@
       },
       "desc": {
         "en": "Is the car locked"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
+    },
+    "longitude": {
+      "type": "number",
+      "title": {
+        "en": "Longitude"
+      },
+      "units": {
+        "en": "lon"
+      },
+      "insights": false,
+      "desc": {
+        "en": "Longitude"
       },
       "getable": true,
       "setable": false,

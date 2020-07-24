@@ -194,6 +194,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.30
+
+- Added latitude and longitude as capabilities
+
 #### 1.0.29
 
 - Speed and odometer is not saved to Insights

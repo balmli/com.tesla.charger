@@ -67,6 +67,12 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('distance_from_home')) {
                 await this.addCapability('distance_from_home');
             }
+            if (!this.hasCapability('latitude')) {
+                await this.addCapability('latitude');
+            }
+            if (!this.hasCapability('longitude')) {
+                await this.addCapability('longitude');
+            }
             const migVersion = this.getStoreValue('version');
             if (!migVersion || migVersion < 1) {
                 await this.removeCapability('odometer');
@@ -840,6 +846,8 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.updateValue('speed', speed);
         await this.updateValue('odometer', odometer);
         await this.updateValue('battery_range', range);
+        await this.updateValue('latitude', response.latitude);
+        await this.updateValue('longitude', response.longitude);
         const prev_distance_from_home = this.getCapabilityValue('speed');
         await this.updateValue('distance_from_home', distance_from_home);
 
