@@ -780,7 +780,7 @@
             "name": "pin",
             "type": "number",
             "min": 1,
-            "max:": 1000,
+            "max": 1000,
             "step": 1,
             "title": {
               "en": "Pin"
@@ -1056,7 +1056,7 @@
             "name": "data_fetch_interval",
             "type": "number",
             "min": 1,
-            "max:": 1440,
+            "max": 1440,
             "step": 1,
             "label": "minutes",
             "title": {
@@ -1254,7 +1254,7 @@
             "name": "pin",
             "type": "number",
             "min": 1,
-            "max:": 1000,
+            "max": 1000,
             "step": 1,
             "title": {
               "en": "Pin"
@@ -1440,7 +1440,7 @@
               },
               "value": 6,
               "min": 1,
-              "max:": 24,
+              "max": 24,
               "step": 0.5,
               "hint": {
                 "en": "The number of hours for charging per charge period.  To get a low price, it is better to charge often."
@@ -1454,7 +1454,7 @@
               },
               "value": 28,
               "min": 1,
-              "max:": 1000,
+              "max": 1000,
               "step": 0.1,
               "hint": {
                 "en": "Charge rate will be updated once each day"

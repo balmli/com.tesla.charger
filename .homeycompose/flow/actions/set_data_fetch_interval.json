@@ -13,7 +13,7 @@
       "name": "data_fetch_interval",
       "type": "number",
       "min": 1,
-      "max:": 1440,
+      "max": 1440,
       "step": 1.0,
       "label": "minutes",
       "title": {
