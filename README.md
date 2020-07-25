@@ -177,6 +177,10 @@ The value of the fetch interval will affect the latency of the triggers that res
 
 Radius in meters for checking if home or at a location.
 
+#### Minimum refresh interval when streaming
+
+To avoid a too high load on the Homey when streaming, there is a minimum refresh interval.  The default is 10 seconds.
+
 #### New password
 
 Use this to set the password, if the password has been changed.
@@ -193,6 +197,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.31
+
+- Added setting for minimum refresh interval for streaming
 
 #### 1.0.30
 

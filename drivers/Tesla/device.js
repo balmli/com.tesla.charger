@@ -514,7 +514,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async getLocationAccuracy() {
-        let settings = await this.getSettings();
+        let settings = this.getSettings();
         this.locationAccuracy = settings.locationAccuracy && settings.locationAccuracy >= 10 && settings.locationAccuracy <= 250 ? settings.locationAccuracy : 250;
         return this.locationAccuracy;
     }
@@ -755,7 +755,7 @@ module.exports = class TeslaChargerDevice extends Device {
         const vehicleId = this.getVehicleId();
         try {
             const now = new Date().getTime();
-            let settings = await this.getSettings();
+            let settings = this.getSettings();
             let lastGetAlldata = this.getStoreValue('lastGetAlldata');
 
             if (!lastGetAlldata ||
@@ -832,6 +832,13 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async handleResponse(prefix, response) {
+        const min_interval_streaming_secs = this.getSetting('min_interval_streaming_secs');
+        const now = Date.now();
+        if (this._lastResponse && (now - this._lastResponse) < min_interval_streaming_secs * 1000) {
+            return;
+        }
+        this._lastResponse = now;
+
         const speed = Math.round(response.speed * MILES_TO_KM);
         const odometer = Math.round(1000 * response.odometer * MILES_TO_KM) / 1000;
         const range = Math.round(response.range * MILES_TO_KM);
@@ -1091,7 +1098,7 @@ module.exports = class TeslaChargerDevice extends Device {
             return;
         }
 
-        let settings = await this.getSettings();
+        let settings = this.getSettings();
         let chargePlan = new ChargePlan({
             charge_start: settings.charge_start,
             charge_end: settings.charge_end,
@@ -1185,7 +1192,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     async handleManualCharging() {
-        let settings = await this.getSettings();
+        let settings = this.getSettings();
         let chargePlan = new ChargePlan({
             charge_start: settings.charge_start,
             charge_end: settings.charge_end

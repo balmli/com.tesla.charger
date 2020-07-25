@@ -52,6 +52,10 @@
       {
         "$extends": "locationAccuracy",
         "id": "locationAccuracy"
+      },
+      {
+        "$extends": "min_interval_streaming_secs",
+        "id": "min_interval_streaming_secs"
       }
     ]
   },

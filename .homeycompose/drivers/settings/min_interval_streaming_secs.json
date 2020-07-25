@@ -1,0 +1,17 @@
+{
+  "id": "min_interval_streaming_secs",
+  "type": "number",
+  "label": {
+    "en": "Minimum refresh interval when streaming"
+  },
+  "value": 10,
+  "units": {
+    "en": "seconds"
+  },
+  "min": 0,
+  "max": 30,
+  "step": 1,
+  "hint": {
+    "en": "A low value for the minimum refresh interval might lead to a high load on the Homey."
+  }
+}
