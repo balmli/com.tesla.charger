@@ -200,6 +200,7 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 #### 1.0.31
 
+- Do not poll every minute when plugged in, but not charging
 - Added setting for minimum refresh interval for streaming
 
 #### 1.0.30

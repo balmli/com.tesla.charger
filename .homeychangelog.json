@@ -1,6 +1,6 @@
 {
   "1.0.31": {
-    "en": "Added setting for minimum refresh interval for streaming. "
+    "en": "Do not poll every minute when plugged in, but not charging. Added setting for minimum refresh interval for streaming. "
   },
   "1.0.30": {
     "en": "Added latitude and longitude as capabilities. "
