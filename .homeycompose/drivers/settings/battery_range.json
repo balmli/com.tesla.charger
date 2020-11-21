@@ -1,0 +1,22 @@
+{
+  "id": "battery_range",
+  "type": "dropdown",
+  "label": {
+    "en": "Battery range"
+  },
+  "value": "battery_range_ideal",
+  "values": [
+    {
+      "id": "battery_range_ideal",
+      "label": {
+        "en": "Ideal"
+      }
+    },
+    {
+      "id": "battery_range_est",
+      "label": {
+        "en": "Estimated"
+      }
+    }
+  ]
+}

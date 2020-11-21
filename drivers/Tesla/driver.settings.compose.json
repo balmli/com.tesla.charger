@@ -62,6 +62,18 @@
   {
     "type": "group",
     "label": {
+      "en": "Battery settings"
+    },
+    "children": [
+      {
+        "$extends": "battery_range",
+        "id": "battery_range"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
       "en": "Account settings"
     },
     "children": [

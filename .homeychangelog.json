@@ -1,4 +1,7 @@
 {
+  "1.0.32": {
+    "en": "Better power calculation for 3-phase chargers. Select between ideal and estimated battery range in Adv. settings. "
+  },
   "1.0.31": {
     "en": "Do not poll every minute when plugged in, but not charging. Added setting for minimum refresh interval for streaming. "
   },

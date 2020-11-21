@@ -181,6 +181,10 @@ Radius in meters for checking if home or at a location.
 
 To avoid a too high load on the Homey when streaming, there is a minimum refresh interval.  The default is 10 seconds.
 
+#### Battery range
+
+Select between ideal battery range (default), and estimated battery range.
+
 #### New password
 
 Use this to set the password, if the password has been changed.
@@ -197,6 +201,11 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.0.32
+
+- Better power calculation for 3-phase chargers
+- Select between ideal and estimated battery range in Adv. settings
 
 #### 1.0.31
 

@@ -73,6 +73,9 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('longitude')) {
                 await this.addCapability('longitude');
             }
+            if (!this.hasCapability('battery_range_ideal')) {
+                await this.addCapability('battery_range_ideal');
+            }
             const migVersion = this.getStoreValue('version');
             if (!migVersion || migVersion < 1) {
                 await this.removeCapability('odometer');
@@ -801,6 +804,7 @@ module.exports = class TeslaChargerDevice extends Device {
             speed: allData.drive_state.speed,
             odometer: allData.vehicle_state.odometer,
             range: allData.charge_state.battery_range,
+            est_range: allData.charge_state.est_battery_range,
             latitude: allData.drive_state.latitude,
             longitude: allData.drive_state.longitude
         });
@@ -811,8 +815,10 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.updateValue('charge_limit_soc', allData.charge_state.charge_limit_soc);
         await this.updateValue('measure_battery', allData.charge_state.battery_level);
         await this.updateValue('charge_rate', await this.charge_rate(allData.charge_state.charge_rate, allData.charge_state.charging_state, prev_charging_state, distance_from_home));
-        await this.updateValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
-        await this.updateValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current, allData.charge_state.charger_voltage, allData.charge_state.charger_phases));
+        await this.updateValue('measure_power', this.calcMeasurePower(allData.charge_state.charger_actual_current,
+            allData.charge_state.charger_voltage, allData.charge_state.charger_phases, allData.charge_state.charger_power));
+        await this.updateValue('meter_power', await this.calcMeterPower(allData.charge_state.charger_actual_current,
+            allData.charge_state.charger_voltage, allData.charge_state.charger_phases, allData.charge_state.charger_power));
         await this.updateValue('locked', allData.vehicle_state.locked);
 
         await this.softwareVersion(allData.vehicle_state);
@@ -841,18 +847,24 @@ module.exports = class TeslaChargerDevice extends Device {
 
         const speed = Math.round(response.speed * MILES_TO_KM);
         const odometer = Math.round(1000 * response.odometer * MILES_TO_KM) / 1000;
-        const range = Math.round(response.range * MILES_TO_KM);
+        const range_ideal = Math.round(response.range * MILES_TO_KM);
+        const battery_range_setting = this.getSetting('battery_range');
+        const range = battery_range_setting === 'battery_range_ideal' ? range_ideal :
+            response.est_range ? Math.round(response.est_range * MILES_TO_KM) : undefined;
 
         const distance_from_home = calculateDistanceInMeters(response.latitude, response.longitude,
           Homey.ManagerGeolocation.getLatitude(),
           Homey.ManagerGeolocation.getLongitude());
 
-        this.logger.info(`${prefix} response: speed: ${speed}, odometer: ${odometer}, battery range: ${range}, distance from home: ${distance_from_home} meters`);
+        this.logger.info(`${prefix} response: speed: ${speed}, odometer: ${odometer}, distance from home: ${distance_from_home} meters`);
 
         const prev_speed = this.getCapabilityValue('speed');
         await this.updateValue('speed', speed);
         await this.updateValue('odometer', odometer);
-        await this.updateValue('battery_range', range);
+        if (range) {
+            await this.updateValue('battery_range', range);
+        }
+        await this.updateValue('battery_range_ideal', range_ideal);
         await this.updateValue('latitude', response.latitude);
         await this.updateValue('longitude', response.longitude);
         const prev_distance_from_home = this.getCapabilityValue('speed');
@@ -892,11 +904,11 @@ module.exports = class TeslaChargerDevice extends Device {
         return chargeRateInKm;
     }
 
-    calcMeasurePower(current, voltage, phases) {
-        return Math.round(current * voltage * phases);
+    calcMeasurePower(current, voltage, phases, charger_power) {
+        return charger_power !== undefined ? charger_power : Math.round(current * voltage * phases);
     }
 
-    async calcMeterPower(current, voltage, phases) {
+    async calcMeterPower(current, voltage, phases, charger_power) {
         let lastCheck = this.getStoreValue('lastCalcMeterPower');
         const now = new Date().getTime();
         await this.setStoreValue('lastCalcMeterPower', now);
@@ -907,7 +919,7 @@ module.exports = class TeslaChargerDevice extends Device {
         }
 
         // kW
-        let power = this.calcMeasurePower(current, voltage, phases) / 1000;
+        let power = this.calcMeasurePower(current, voltage, phases, charger_power) / 1000;
 
         if (lastCheck !== undefined && lastCheck !== null) {
             let diff_ms = now - lastCheck;
@@ -1090,7 +1102,7 @@ module.exports = class TeslaChargerDevice extends Device {
         }
 
         let batteryLevel = this.getCapabilityValue('measure_battery');
-        let batteryRange = this.getCapabilityValue('battery_range');
+        let batteryRange = this.getCapabilityValue('battery_range_ideal');
         let chargeLimitSoc = this.getCapabilityValue('charge_limit_soc');
 
         if (!batteryLevel || !batteryRange) {
