@@ -1,4 +1,7 @@
 {
+  "1.0.35": {
+    "en": "Fix for consecutive condition cards, ref. issue #4. "
+  },
   "1.0.34": {
     "en": "Fix for power calculation. "
   },

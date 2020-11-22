@@ -805,7 +805,7 @@ module.exports = class TeslaChargerDevice extends Device {
             est_range: allData.charge_state.est_battery_range,
             latitude: allData.drive_state.latitude,
             longitude: allData.drive_state.longitude
-        });
+        }, true);
 
         await this.updateValue('prev_charging_state', prev_charging_state);
         await this.updateValue('charging_state', allData.charge_state.charging_state);
@@ -835,10 +835,10 @@ module.exports = class TeslaChargerDevice extends Device {
         });
     }
 
-    async handleResponse(prefix, response) {
+    async handleResponse(prefix, response, force = false) {
         const min_interval_streaming_secs = this.getSetting('min_interval_streaming_secs');
         const now = Date.now();
-        if (this._lastResponse && (now - this._lastResponse) < min_interval_streaming_secs * 1000) {
+        if (this._lastResponse && (now - this._lastResponse) < min_interval_streaming_secs * 1000 && !force) {
             return;
         }
         this._lastResponse = now;

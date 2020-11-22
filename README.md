@@ -202,6 +202,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.35
+
+- Fix for consecutive condition cards, ref. issue #4
+
 #### 1.0.34
 
 - Fix for power calculation
