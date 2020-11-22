@@ -12,7 +12,7 @@
     {
       "name": "name",
       "type": "text",
-      "labe": {
+      "label": {
         "en": "Name"
       },
       "placeholder": {

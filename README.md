@@ -202,6 +202,11 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.33
+
+- Switched from data to vehicle_data endpoint
+- Switched to OAuth for streaming
+
 #### 1.0.32
 
 - Better power calculation for 3-phase chargers

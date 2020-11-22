@@ -1,4 +1,7 @@
 {
+  "1.0.33": {
+    "en": "Switched from data to vehicle_data endpoint. Switched to OAuth for streaming. "
+  },
   "1.0.32": {
     "en": "Better power calculation for 3-phase chargers. Select between ideal and estimated battery range in Adv. settings. "
   },
