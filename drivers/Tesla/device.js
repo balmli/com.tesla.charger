@@ -28,8 +28,6 @@ module.exports = class TeslaChargerDevice extends Device {
         super(...args);
         this.apiErrors = 0;
         this.logger = new Logger({
-            logLevel: 4,
-            captureLevel: 5,
             logFunc: this.log,
             errorFunc: this.error,
         }, Homey.env);
@@ -905,7 +903,7 @@ module.exports = class TeslaChargerDevice extends Device {
     }
 
     calcMeasurePower(current, voltage, phases, charger_power) {
-        return charger_power !== undefined ? charger_power : Math.round(current * voltage * phases);
+        return charger_power !== undefined && phases > 1 ? charger_power * 1000 : Math.round(current * voltage * phases);
     }
 
     async calcMeterPower(current, voltage, phases, charger_power) {

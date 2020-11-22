@@ -11,8 +11,6 @@ module.exports = class TeslaChargerDriver extends Driver {
         super(...args);
 
         this.logger = new Logger({
-            logLevel: 4,
-            captureLevel: 5,
             logFunc: this.log,
             errorFunc: this.error,
         }, Homey.env);

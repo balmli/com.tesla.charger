@@ -1,4 +1,7 @@
 {
+  "1.0.34": {
+    "en": "Fix for power calculation. "
+  },
   "1.0.33": {
     "en": "Switched from data to vehicle_data endpoint. Switched to OAuth for streaming. "
   },
