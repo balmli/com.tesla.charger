@@ -1,4 +1,7 @@
 {
+  "1.0.36": {
+    "en": "Added capability for 'Software version update'. "
+  },
   "1.0.35": {
     "en": "Fix for consecutive condition cards, ref. issue #4. "
   },

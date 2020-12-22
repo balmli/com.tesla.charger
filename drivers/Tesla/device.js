@@ -59,6 +59,9 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('software_version')) {
                 await this.addCapability('software_version');
             }
+            if (!this.hasCapability('software_version_update')) {
+                await this.addCapability('software_version_update');
+            }
             if (!this.hasCapability('speed')) {
                 await this.addCapability('speed');
             }
@@ -934,6 +937,7 @@ module.exports = class TeslaChargerDevice extends Device {
 
         const softwareUpdateVersion = vehicle_state.software_update && vehicle_state.software_update.version.length > 0 ?
           vehicle_state.software_update.version : undefined;
+        this.updateValue('software_version_update', softwareUpdateVersion);
 
         if (softwareUpdateVersion && carVersion !== softwareUpdateVersion && !this._softwareUpdateTriggered) {
             this._softwareUpdateTriggered = Date.now();
