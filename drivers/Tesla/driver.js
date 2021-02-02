@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const {Driver} = Homey;
+const { Driver } = Homey;
 const Tesla = require('../../lib/tesla'),
     Logger = require('../../lib/Logger');
 
@@ -36,12 +36,12 @@ module.exports = class TeslaChargerDriver extends Driver {
                 logger: this.logger
             });
 
-            teslaSession.login().then(function () {
+            teslaSession.login().then(() => {
                 callback(null, true);
             }).catch(error => {
                 this.logger.error('paring error', error);
                 callback(null, false);
-            })
+            });
         });
 
         socket.on('list_devices', (data, callback) => {
@@ -53,12 +53,12 @@ module.exports = class TeslaChargerDriver extends Driver {
                 vehicles.forEach(vehicle => {
                     this.logger.info('found a car:', vehicle);
                     devices.push({
-                        data: {id: vehicle.vin},
+                        data: { id: vehicle.vin },
                         name: vehicle.display_name,
                         icon: 'icon_' + vehicle.vin[3].toLowerCase() + '.svg',
                         store: {
                             vehicleId: vehicle.id_s,
-                            grant: teslaSession.getGrant(),
+                            tokens: teslaSession.getTokens(),
                             username: account.username
                         }
                     })
@@ -70,6 +70,22 @@ module.exports = class TeslaChargerDriver extends Driver {
 
         socket.on('add_device', (device, callback) => {
             //this.logger.info('pairing: vehicle added', device);
+        })
+    }
+
+    onRepair(socket, device) {
+        socket.on('login', (data, callback) => {
+            device.updateCredentials(data.username, data.password).then(() => {
+                callback(null, true);
+                this.logger.info('reparing OK');
+            }).catch(error => {
+                this.logger.error('reparing error', error);
+                callback(null, false);
+            });
+        });
+
+        socket.on('disconnect', () => {
+            // Cleanup
         })
     }
 

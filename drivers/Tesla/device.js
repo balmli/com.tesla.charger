@@ -92,26 +92,36 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async createTeslaApi() {
         const self = this;
+        const tokens = this.getStoreValue('tokens');
         this._teslaApi = new Tesla({
             user: this.getStoreValue('username'),
-            grant: this.getStoreValue('grant'),
+            tokens: tokens,
             logger: this.logger
         });
         this._teslaApi.on('invalid_user_password', async () => {
-            self.setUnavailable(Homey.__('device.errorAccountAccess'));
+            await self.setUnavailable(Homey.__('device.errorAccountAccess'));
             let notification = new Homey.Notification({excerpt: Homey.__('device.errorAccountAccessNotification')});
             await notification.register();
         });
-        this._teslaApi.on('grant', async grant => {
-            await self.setStoreValue('grant', grant);
+        this._teslaApi.on('tokens', async tokens => {
+            await self.setStoreValue('tokens', tokens);
         });
         this._teslaApi.on('api_error', async (reason) => {
             self.handleApiError('api_error event', reason);
         });
+        if (!tokens) {
+            await this.setUnavailable(Homey.__('device.errorNoTokens'));
+            let notification = new Homey.Notification({excerpt: Homey.__('device.errorNoTokensNotification')});
+            await notification.register();
+        }
     }
 
     async updateVehicleId() {
         try {
+            if (!this.getAvailable()) {
+                this.logger.info(`updateVehicleId: skip due to unavailable device`);
+                return;
+            }
             const { vehicleId, vehicle_id } = await this._teslaApi.getVehicleIdByVIN(this.getData().id);
             await this.setStoreValue('vehicleId', vehicleId);
             await this.setStoreValue('vehicle_id', vehicle_id);
@@ -139,10 +149,6 @@ module.exports = class TeslaChargerDevice extends Device {
             this._lastPriceFetch = undefined;
             this.clearExistingChargePlan();
         }
-        if (changedKeysArr.includes('password') && newSettingsObj.password !== '') {
-            await this.refreshPassword(newSettingsObj.password);
-            setTimeout(this.clearPasswordFromSettings.bind(this), 1000);
-        }
         if (changedKeysArr.includes('locationAccuracy')) {
             await this.getLocationAccuracy();
         }
@@ -150,25 +156,21 @@ module.exports = class TeslaChargerDevice extends Device {
         callback(null, true);
     }
 
-    async clearPasswordFromSettings() {
-        await this.setSettings({
-            password: ''
-        });
-    }
-
-    async refreshPassword(password) {
-        // Logon to get the grant
+    async updateCredentials(username, password) {
+        // Logon to get tokens
         const self = this;
         let teslaSession = new Tesla({
-            user: this.getStoreValue('username'),
-            password: password
+            user: username,
+            password: password,
+            logger: this.logger
         });
-        teslaSession.on('grant', async grant => {
+        teslaSession.on('tokens', async tokens => {
             if (self.getApi()) {
-                self.getApi().updateGrant(grant);
+                self.getApi().updateTokens(tokens);
             }
-            await self.setStoreValue('grant', grant);
-            self.logger.debug('the password was refreshed OK');
+            await self.setStoreValue('username', username);
+            await self.setStoreValue('tokens', tokens);
+            self.logger.info('the username and password was OK, and got new tokens');
         });
         try {
             await teslaSession.login();
@@ -176,6 +178,7 @@ module.exports = class TeslaChargerDevice extends Device {
                 await this.setAvailable();
             }
         } catch (err) {
+            this.logger.error('updateCredentials ERROR', err);
             throw new Error(Homey.__('device.invalid_password'));
         }
     }

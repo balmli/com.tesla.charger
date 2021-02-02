@@ -1,7 +1,7 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.36",
-  "compatibility": ">=2.0.5",
+  "version": "1.0.37",
+  "compatibility": ">=4.1.0",
   "sdk": 2,
   "brandColor": "#CC0000",
   "name": {

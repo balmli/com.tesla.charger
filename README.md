@@ -202,6 +202,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.37
+
+- Support new authentication system. Repair in device settings to fix.
+
 #### 1.0.36
 
 - Added capability for 'Software version update'

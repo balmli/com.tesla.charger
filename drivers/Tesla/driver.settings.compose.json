@@ -70,17 +70,5 @@
         "id": "battery_range"
       }
     ]
-  },
-  {
-    "type": "group",
-    "label": {
-      "en": "Account settings"
-    },
-    "children": [
-      {
-        "$extends": "password",
-        "id": "password"
-      }
-    ]
   }
 ]

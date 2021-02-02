@@ -60,10 +60,18 @@
       "template": "login_credentials",
       "options": {
         "logo": "pair_logo.png",
-        "usernameLabel": "Tesla account",
-        "usernamePlaceholder": "Username...",
-        "passwordLabel": "Password",
-        "passwordPlaceholder": "Password..."
+        "usernameLabel": {
+          "en": "Tesla account"
+        },
+        "usernamePlaceholder": {
+          "en": "Username..."
+        },
+        "passwordLabel": {
+          "en": "Password"
+        },
+        "passwordPlaceholder": {
+          "en": "Password..."
+        }
       }
     },
     {
@@ -76,6 +84,27 @@
     {
       "id": "add_vehicle",
       "template": "add_devices"
+    }
+  ],
+  "repair": [
+    {
+      "id": "dorepair",
+      "template": "login_credentials",
+      "options": {
+        "logo": "{{driverAssetsPath}}/../pair/pair_logo.png",
+        "usernameLabel": {
+          "en": "Tesla account"
+        },
+        "usernamePlaceholder": {
+          "en": "Username..."
+        },
+        "passwordLabel": {
+          "en": "Password"
+        },
+        "passwordPlaceholder": {
+          "en": "Password..."
+        }
+      }
     }
   ]
 }

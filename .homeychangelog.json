@@ -1,4 +1,7 @@
 {
+  "1.0.37": {
+    "en": "Support new authentication system. Repair in device settings to fix. "
+  },
   "1.0.36": {
     "en": "Added capability for 'Software version update'. "
   },
