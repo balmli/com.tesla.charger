@@ -202,6 +202,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.39
+
+- Fix for MFA authentication.
+
 #### 1.0.38
 
 - Support multi-factor authentication.
