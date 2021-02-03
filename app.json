@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.tesla.charger",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "compatibility": ">=4.1.0",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -1389,7 +1389,7 @@
       },
       "pair": [
         {
-          "id": "start",
+          "id": "pair_start",
           "template": "login_credentials",
           "options": {
             "logo": "pair_logo.png",
@@ -1408,6 +1408,20 @@
           }
         },
         {
+          "id": "pair_pin_code",
+          "template": "pincode",
+          "options": {
+            "type": "number",
+            "length": 6,
+            "title": {
+              "en": "Enter MFA code"
+            },
+            "hint": {
+              "en": "Enter the 6 digits from the MFA device"
+            }
+          }
+        },
+        {
           "id": "list_devices",
           "template": "list_devices",
           "navigation": {
@@ -1421,10 +1435,10 @@
       ],
       "repair": [
         {
-          "id": "dorepair",
+          "id": "repair_start",
           "template": "login_credentials",
           "options": {
-            "logo": "/drivers/Tesla/assets/../pair/pair_logo.png",
+            "logo": "../pair/pair_logo.png",
             "usernameLabel": {
               "en": "Tesla account"
             },
@@ -1436,6 +1450,20 @@
             },
             "passwordPlaceholder": {
               "en": "Password..."
+            }
+          }
+        },
+        {
+          "id": "repair_pin_code",
+          "template": "pincode",
+          "options": {
+            "type": "number",
+            "length": 6,
+            "title": {
+              "en": "Enter MFA code"
+            },
+            "hint": {
+              "en": "Enter the 6 digits from the MFA device"
             }
           }
         }

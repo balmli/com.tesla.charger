@@ -21,7 +21,10 @@ module.exports = class TeslaChargerDriver extends Driver {
     }
 
     onPair(socket) {
-        let teslaSession;
+        const self = this;
+        let teslaSession = new Tesla({
+            logger: self.logger
+        });
         let account;
 
         socket.on('login', (data, callback) => {
@@ -30,16 +33,25 @@ module.exports = class TeslaChargerDriver extends Driver {
             }
 
             account = data;
-            teslaSession = new Tesla({
-                user: account.username,
-                password: account.password,
-                logger: this.logger
-            });
 
-            teslaSession.login().then(() => {
+            teslaSession.login(account.username, account.password).then(response => {
+                self.logger.debug('onPair login', response);
+                callback(null, true);
+                if (!response.mfa) {
+                    socket.showView('list_devices');
+                }
+            }).catch(error => {
+                self.logger.error('paring error', error);
+                callback(null, false);
+            });
+        });
+
+        socket.on('pincode', async (pincode, callback) => {
+            teslaSession.login(account.username, account.password, pincode).then(response => {
+                self.logger.debug('onPair pincode', response);
                 callback(null, true);
             }).catch(error => {
-                this.logger.error('paring error', error);
+                self.logger.error('socket MFA code error:', err);
                 callback(null, false);
             });
         });
@@ -51,15 +63,14 @@ module.exports = class TeslaChargerDriver extends Driver {
                     return callback('errorNoVehiclesFound');
                 }
                 vehicles.forEach(vehicle => {
-                    this.logger.info('found a car:', vehicle);
+                    self.logger.info('found a car:', vehicle);
                     devices.push({
                         data: { id: vehicle.vin },
                         name: vehicle.display_name,
                         icon: 'icon_' + vehicle.vin[3].toLowerCase() + '.svg',
                         store: {
                             vehicleId: vehicle.id_s,
-                            tokens: teslaSession.getTokens(),
-                            username: account.username
+                            tokens: teslaSession.getTokens()
                         }
                     })
                 });
@@ -74,19 +85,42 @@ module.exports = class TeslaChargerDriver extends Driver {
     }
 
     onRepair(socket, device) {
+        const self = this;
+        let teslaSession = new Tesla({
+            logger: self.logger
+        });
+        let account;
+
         socket.on('login', (data, callback) => {
-            device.updateCredentials(data.username, data.password).then(() => {
+            if (data.username === '' || data.password === '') {
+                return callback(null, false);
+            }
+
+            account = data;
+
+            teslaSession.login(account.username, account.password).then(response => {
+                self.logger.debug('onRepair login', response);
                 callback(null, true);
-                this.logger.info('reparing OK');
+                if (!response.mfa) {
+                    socket.done();
+                }
             }).catch(error => {
-                this.logger.error('reparing error', error);
+                self.logger.error('paring error', error);
                 callback(null, false);
             });
         });
 
-        socket.on('disconnect', () => {
-            // Cleanup
-        })
+        socket.on('pincode', async (pincode, callback) => {
+            teslaSession.login(account.username, account.password, pincode).then(response => {
+                self.logger.debug('onRepair pincode', response);
+                device.updateTokens(response);
+                callback(null, true);
+            }).catch(error => {
+                self.logger.error('socket MFA code error:', err);
+                callback(null, false);
+            });
+        });
+
     }
 
 };

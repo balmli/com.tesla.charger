@@ -1,6 +1,9 @@
 {
+  "1.0.38": {
+    "en": "Support new authentication system. Go to Device settings - Maintenance Actions - Repair to repair. Support multi-factor authentication. "
+  },
   "1.0.37": {
-    "en": "Support new authentication system. Repair in device settings to fix. "
+    "en": "Support new authentication system. Go to Device settings - Maintenance Actions - Repair to repair. "
   },
   "1.0.36": {
     "en": "Added capability for 'Software version update'. "

@@ -94,7 +94,6 @@ module.exports = class TeslaChargerDevice extends Device {
         const self = this;
         const tokens = this.getStoreValue('tokens');
         this._teslaApi = new Tesla({
-            user: this.getStoreValue('username'),
             tokens: tokens,
             logger: this.logger
         });
@@ -156,31 +155,11 @@ module.exports = class TeslaChargerDevice extends Device {
         callback(null, true);
     }
 
-    async updateCredentials(username, password) {
-        // Logon to get tokens
-        const self = this;
-        let teslaSession = new Tesla({
-            user: username,
-            password: password,
-            logger: this.logger
-        });
-        teslaSession.on('tokens', async tokens => {
-            if (self.getApi()) {
-                self.getApi().updateTokens(tokens);
-            }
-            await self.setStoreValue('username', username);
-            await self.setStoreValue('tokens', tokens);
-            self.logger.info('the username and password was OK, and got new tokens');
-        });
-        try {
-            await teslaSession.login();
-            if (!this.getAvailable()) {
-                await this.setAvailable();
-            }
-        } catch (err) {
-            this.logger.error('updateCredentials ERROR', err);
-            throw new Error(Homey.__('device.invalid_password'));
+    async updateTokens(tokens) {
+        if (this.getApi()) {
+            this.getApi().updateTokens(tokens);
         }
+        await this.setStoreValue('tokens', tokens);
     }
 
     async registerFlowCards() {

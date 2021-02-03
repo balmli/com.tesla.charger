@@ -202,9 +202,13 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.38
+
+- Support multi-factor authentication.
+
 #### 1.0.37
 
-- Support new authentication system. Repair in device settings to fix.
+- Support new authentication system. Go to Device settings - Maintenance Actions - Repair to repair.
 
 #### 1.0.36
 
