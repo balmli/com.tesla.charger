@@ -185,9 +185,9 @@ To avoid a too high load on the Homey when streaming, there is a minimum refresh
 
 Select between ideal battery range (default), and estimated battery range.
 
-#### New password
+## Details about Maintenance Actions:
 
-Use this to set the password, if the password has been changed.
+To repair go to device settings -> Maintenance Actions, and click the Repair - button.
 
 
 ## Acknowledgements:
@@ -202,9 +202,13 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.0.40
+
+- Fix multi-factor authentication.
+
 #### 1.0.39
 
-- Fix for MFA authentication.
+- Fix multi-factor authentication.
 
 #### 1.0.38
 

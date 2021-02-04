@@ -1,6 +1,6 @@
 {
   "id": "com.tesla.charger",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "compatibility": ">=4.1.0",
   "sdk": 2,
   "brandColor": "#CC0000",
@@ -43,5 +43,6 @@
   "bugs": {
     "url": "https://github.com/balmli/com.tesla.charger/issues"
   },
+  "homeyCommunityTopicId": 30648,
   "source": "https://github.com/balmli/com.tesla.charger"
 }

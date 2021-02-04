@@ -38,6 +38,7 @@ module.exports = class TeslaChargerDriver extends Driver {
                 self.logger.debug('onPair login', response);
                 callback(null, true);
                 if (!response.mfa) {
+                    self.logger.info('Login success');
                     socket.showView('list_devices');
                 }
             }).catch(error => {
@@ -49,6 +50,7 @@ module.exports = class TeslaChargerDriver extends Driver {
         socket.on('pincode', async (pincode, callback) => {
             teslaSession.login(account.username, account.password, pincode).then(response => {
                 self.logger.debug('onPair pincode', response);
+                self.logger.info('Login success');
                 callback(null, true);
             }).catch(error => {
                 self.logger.error('socket MFA code error:', err);
@@ -115,10 +117,11 @@ module.exports = class TeslaChargerDriver extends Driver {
             self.logger.debug('onRepair pincode', mfaCode);
             teslaSession.login(account.username, account.password, mfaCode).then(response => {
                 self.logger.debug('onRepair pincode', response);
+                self.logger.info('Repair success');
                 device.updateTokens(response);
                 callback(null, true);
             }).catch(error => {
-                self.logger.error('socket MFA code error:', err);
+                self.logger.error('socket MFA code error:', error);
                 callback(null, false);
             });
         });
