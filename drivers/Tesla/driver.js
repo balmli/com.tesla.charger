@@ -48,7 +48,9 @@ module.exports = class TeslaChargerDriver extends Driver {
         });
 
         socket.on('pincode', async (pincode, callback) => {
-            teslaSession.login(account.username, account.password, pincode).then(response => {
+            const mfaCode = pincode.join("");
+            self.logger.debug('onPair pincode', mfaCode);
+            teslaSession.login(account.username, account.password, mfaCode).then(response => {
                 self.logger.debug('onPair pincode', response);
                 self.logger.info('Login success');
                 callback(null, true);

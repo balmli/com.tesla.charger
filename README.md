@@ -202,11 +202,7 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
-#### 1.0.40
-
-- Fix multi-factor authentication.
-
-#### 1.0.39
+#### 1.0.41
 
 - Fix multi-factor authentication.
 
