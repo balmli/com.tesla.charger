@@ -1,4 +1,7 @@
 {
+  "1.0.42": {
+    "en": "Fix multi-factor authentication. "
+  },
   "1.0.41": {
     "en": "Support new authentication system. Go to Device settings - Maintenance Actions - Repair to repair. Support multi-factor authentication. "
   },

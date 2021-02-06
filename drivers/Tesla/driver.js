@@ -22,19 +22,14 @@ module.exports = class TeslaChargerDriver extends Driver {
 
     onPair(socket) {
         const self = this;
+        let pairClicked = false;
         let teslaSession = new Tesla({
-            logger: self.logger
+            logger: self.logger,
+            i18n: Homey
         });
-        let account;
 
         socket.on('login', (data, callback) => {
-            if (data.username === '' || data.password === '') {
-                return callback(null, false);
-            }
-
-            account = data;
-
-            teslaSession.login(account.username, account.password).then(response => {
+            teslaSession.login(data.username, data.password).then(response => {
                 self.logger.debug('onPair login', response);
                 callback(null, true);
                 if (!response.mfa) {
@@ -42,22 +37,28 @@ module.exports = class TeslaChargerDriver extends Driver {
                     socket.showView('list_devices');
                 }
             }).catch(error => {
-                self.logger.error('paring error', error);
-                callback(null, false);
+                self.logger.error('Pairing login error:', error);
+                callback(error);
             });
         });
 
         socket.on('pincode', async (pincode, callback) => {
-            const mfaCode = pincode.join("");
-            self.logger.debug('onPair pincode', mfaCode);
-            teslaSession.login(account.username, account.password, mfaCode).then(response => {
-                self.logger.debug('onPair pincode', response);
-                self.logger.info('Login success');
-                callback(null, true);
-            }).catch(error => {
-                self.logger.error('socket MFA code error:', err);
-                callback(null, false);
-            });
+            if (!pairClicked) {
+                pairClicked = true;
+                const mfaCode = pincode.join("");
+                self.logger.debug('onPair pincode', mfaCode);
+                teslaSession.mfaVerify(mfaCode).then(response => {
+                    self.logger.debug('onPair pincode', response);
+                    self.logger.info('Login success');
+                    callback(null, true);
+                }).catch(error => {
+                    self.logger.error('Pairing pincode error:', error);
+                    pairClicked = false;
+                    callback(error);
+                });
+            } else {
+                self.logger.debug('onPair pincode double click');
+            }
         });
 
         socket.on('list_devices', (data, callback) => {
@@ -90,42 +91,43 @@ module.exports = class TeslaChargerDriver extends Driver {
 
     onRepair(socket, device) {
         const self = this;
+        let pairClicked = false;
         let teslaSession = new Tesla({
-            logger: self.logger
+            logger: self.logger,
+            i18n: Homey
         });
-        let account;
 
         socket.on('login', (data, callback) => {
-            if (data.username === '' || data.password === '') {
-                return callback(null, false);
-            }
-
-            account = data;
-
-            teslaSession.login(account.username, account.password).then(response => {
+            teslaSession.login(data.username, data.password).then(response => {
                 self.logger.debug('onRepair login', response);
                 callback(null, true);
                 if (!response.mfa) {
+                    self.logger.info('Repair success');
                     socket.done();
                 }
             }).catch(error => {
-                self.logger.error('paring error', error);
-                callback(null, false);
+                self.logger.error('Reparing login error:', error);
+                callback(error);
             });
         });
 
         socket.on('pincode', async (pincode, callback) => {
-            const mfaCode = pincode.join("");
-            self.logger.debug('onRepair pincode', mfaCode);
-            teslaSession.login(account.username, account.password, mfaCode).then(response => {
-                self.logger.debug('onRepair pincode', response);
-                self.logger.info('Repair success');
-                device.updateTokens(response);
-                callback(null, true);
-            }).catch(error => {
-                self.logger.error('socket MFA code error:', error);
-                callback(null, false);
-            });
+            if (!pairClicked) {
+                pairClicked = true;
+                const mfaCode = pincode.join("");
+                self.logger.debug('onRepair pincode', mfaCode);
+                teslaSession.mfaVerify(mfaCode).then(response => {
+                    self.logger.debug('onRepair pincode', response);
+                    self.logger.info('Repair success');
+                    callback(null, true);
+                }).catch(error => {
+                    self.logger.error('Repairing pincode error:', error);
+                    pairClicked = false;
+                    callback(error);
+                });
+            } else {
+                self.logger.debug('onRepair pincode double click');
+            }
         });
 
     }

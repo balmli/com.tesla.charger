@@ -14,5 +14,25 @@
     "charge_plan": "Charge plan",
     "charge_hours": "Charge hours",
     "cost_reduction": "Cost reduction"
+  },
+  "errors": {
+    "login": {
+      "no_username": "No username",
+      "no_password": "No password",
+      "fetching_oauth_form": "Fetching oauth form failed",
+      "scraping_oauth_form": "Scraping oauth form failed",
+      "invalid_credentials": "Invalid credentials",
+      "cannot_verify_mfa": "Not logged in, so cannot verify MFA",
+      "fetching_mfa_factors": "Fetching MFA factors failed",
+      "mfa_factors_unavailable": "MFA factors unavailable",
+      "invalid_mfa_response": "Invalid MFA response",
+      "invalid_mfa_code": "Invalid MFA code",
+      "invalid_mfa_logon": "Invalid MFA logon",
+      "fetching_auth_code": "Fetching auth code failed",
+      "fetching_tokens": "Fetching tokens failed"
+    },
+    "auth": {
+      "no_token": "No token"
+    }
   }
 }
