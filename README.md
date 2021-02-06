@@ -190,11 +190,6 @@ Select between ideal battery range (default), and estimated battery range.
 To repair go to device settings -> Maintenance Actions, and click the Repair - button.
 
 
-## Acknowledgements:
-
-The official Tesla app, written by Erik van Dongen, https://github.com/irritanterik/homey-tesla.com.
-
-
 ## Disclaimer:
 
 Use at your own risk. I accept no responsibility for any damages caused by using this app.
