@@ -21,11 +21,6 @@ Use the Automatic mode for charging with lowest utility prices in the charge per
 For more information, click on the link for the community forum.
 
 
-Acknowledgements:
-
-- The official Tesla app, written by Erik van Dongen, https://github.com/irritanterik/homey-tesla.com.
-
-
 Disclaimer:
 
 - Use at your own risk. I accept no responsibility for any damages caused by using this app.
