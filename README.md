@@ -1,7 +1,8 @@
 # Tesla Smart Charger
 
-This is an alternative to the [Tesla app](https://apps.athom.com/app/com.tesla) in the app store.
+Charge your Tesla with lowest utility prices!
 
+When the Tesla is plugged in the charger and home, this app can handle the charging.
 
 ## Install:
 
@@ -70,7 +71,31 @@ To install:
 - Honk horn
 - Flash light
 
+#### Capabilities
 
+- Charge mode (off, automatic, manual_std, charge_now)
+- Charging state (Disconnected, Stopped, Charging, Complete)
+- Charging rate (km/h)
+- Battery range (km)
+- Measure battery (%)    
+- Battery ideal range (km)    
+- Planned charge (km)    
+- Time to full charge (h)    
+- Charge limit (%)    
+- Measure power (W)
+- Meter power (kWh)    
+- Measure temperature (inside C)    
+- Measure temperature (outside C)    
+- Speed (km/h)    
+- Odometer (km)    
+- Locked (true/false)    
+- Vehicle state (online, asleep)
+- Location (address)    
+- Distance from home (m)
+- Longitude (lon)
+- Latitude (lat)
+- Software version
+    
 ## Modes:
 
 #### Mode: Off
@@ -196,6 +221,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 
 ## Release Notes:
+
+#### 1.1.0
+
+- Added location capability.
 
 #### 1.0.42
 

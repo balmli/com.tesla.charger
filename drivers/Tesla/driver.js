@@ -45,6 +45,7 @@ module.exports = class TeslaChargerDriver extends Driver {
         socket.on('pincode', async (pincode, callback) => {
             if (!pairClicked) {
                 pairClicked = true;
+                socket.showView('pair_loading');
                 const mfaCode = pincode.join("");
                 self.logger.debug('onPair pincode', mfaCode);
                 teslaSession.mfaVerify(mfaCode).then(response => {
@@ -54,6 +55,7 @@ module.exports = class TeslaChargerDriver extends Driver {
                 }).catch(error => {
                     self.logger.error('Pairing pincode error:', error);
                     pairClicked = false;
+                    socket.showView('pair_pin_code');
                     callback(error);
                 });
             } else {
@@ -84,9 +86,6 @@ module.exports = class TeslaChargerDriver extends Driver {
             })
         });
 
-        socket.on('add_device', (device, callback) => {
-            //this.logger.info('pairing: vehicle added', device);
-        })
     }
 
     onRepair(socket, device) {
@@ -114,15 +113,18 @@ module.exports = class TeslaChargerDriver extends Driver {
         socket.on('pincode', async (pincode, callback) => {
             if (!pairClicked) {
                 pairClicked = true;
+                socket.showView('repair_loading');
                 const mfaCode = pincode.join("");
                 self.logger.debug('onRepair pincode', mfaCode);
                 teslaSession.mfaVerify(mfaCode).then(response => {
                     self.logger.debug('onRepair pincode', response);
                     self.logger.info('Repair success');
                     callback(null, true);
+                    socket.done();
                 }).catch(error => {
                     self.logger.error('Repairing pincode error:', error);
                     pairClicked = false;
+                    socket.showView('repair_pin_code');
                     callback(error);
                 });
             } else {

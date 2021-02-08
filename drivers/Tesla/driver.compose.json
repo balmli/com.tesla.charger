@@ -23,6 +23,7 @@
     "speed",
     "odometer",
     "measure_battery",
+    "location",
     "prev_charging_state",
     "time_to_full_charge",
     "charge_limit_soc",
@@ -89,6 +90,10 @@
       }
     },
     {
+      "id": "pair_loading",
+      "template": "loading"
+    },
+    {
       "id": "list_devices",
       "template": "list_devices",
       "navigation": {
@@ -133,6 +138,10 @@
           "en": "Enter the 6 digits from the MFA device"
         }
       }
+    },
+    {
+      "id": "repair_loading",
+      "template": "loading"
     }
   ]
 }

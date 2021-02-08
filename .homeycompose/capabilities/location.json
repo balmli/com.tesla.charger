@@ -1,0 +1,14 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Location"
+  },
+  "insights": false,
+  "desc": {
+    "en": "Location"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/drivers/Tesla/assets/location.svg"
+}

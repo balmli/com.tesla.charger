@@ -5,6 +5,7 @@ const {Device} = Homey;
 const {Notification} = Homey;
 const moment = require('moment'),
     Tesla = require('../../lib/tesla'),
+    OpenStreetMap = require('../../lib/OpenStreetMap'),
     ChargePlan = require('../../lib/charge_plan'),
     nordpool = require('../../lib/nordpool'),
     Logger = require('../../lib/Logger');
@@ -77,6 +78,9 @@ module.exports = class TeslaChargerDevice extends Device {
             if (!this.hasCapability('battery_range_ideal')) {
                 await this.addCapability('battery_range_ideal');
             }
+            if (!this.hasCapability('location')) {
+                await this.addCapability('location');
+            }
             const migVersion = this.getStoreValue('version');
             if (!migVersion || migVersion < 1) {
                 await this.removeCapability('odometer');
@@ -92,6 +96,7 @@ module.exports = class TeslaChargerDevice extends Device {
 
     async createTeslaApi() {
         const self = this;
+        this._osm = new OpenStreetMap();
         const tokens = this.getStoreValue('tokens');
         this._teslaApi = new Tesla({
             tokens: tokens,
@@ -850,6 +855,7 @@ module.exports = class TeslaChargerDevice extends Device {
         await this.notifyMoving(speed, prev_speed, response.latitude, response.longitude);
         await this.notifyHome(distance_from_home, prev_distance_from_home);
         await this.checkGeofence(response.latitude, response.longitude);
+        await this.updateLocation(response.latitude, response.longitude);
 
         return { speed, odometer, range, distance_from_home };
     }
@@ -974,6 +980,15 @@ module.exports = class TeslaChargerDevice extends Device {
                 loc.prev_distance = distance;
                 await this.storeLocation(i, loc);
             }
+        }
+    }
+
+    async updateLocation(latitude, longitude) {
+        try {
+            const location = await this._osm.getAddress(latitude, longitude);
+            await this.updateValue('location', location.place + ', ' + location.city);
+        } catch (err) {
+            this.logger.error('updateLocation', err);
         }
     }
 
