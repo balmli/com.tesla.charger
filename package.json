@@ -1,6 +1,6 @@
 {
   "name": "com.tesla.charger",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Tesla Charger",
   "main": "app.js",
   "scripts": {

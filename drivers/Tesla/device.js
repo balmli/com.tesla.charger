@@ -88,7 +88,11 @@ module.exports = class TeslaChargerDevice extends Device {
                 await this.removeCapability('speed');
                 await this.addCapability('speed');
             }
-            await this.setStoreValue('version', 1);
+            if (!migVersion || migVersion < 2) {
+                await this.removeCapability('location');
+                await this.addCapability('location');
+            }
+            await this.setStoreValue('version', 2);
         } catch (err) {
             this.logger.error('Migration failed', err);
         }

@@ -222,6 +222,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.1.3
+
+- Fix utility prices.
+
 #### 1.1.2
 
 - Fix authentication.

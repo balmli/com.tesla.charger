@@ -1,4 +1,7 @@
 {
+  "1.1.3": {
+    "en": "Fix authentication. Fix utility prices. "
+  },
   "1.1.2": {
     "en": "Fix authentication. "
   },
