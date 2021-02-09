@@ -31,10 +31,11 @@ module.exports = class TeslaChargerDriver extends Driver {
         socket.on('login', (data, callback) => {
             teslaSession.login(data.username, data.password).then(response => {
                 self.logger.debug('onPair login', response);
-                callback(null, true);
                 if (!response.mfa) {
                     self.logger.info('Login success');
                     socket.showView('list_devices');
+                } else {
+                    socket.showView('pair_pin_code');
                 }
             }).catch(error => {
                 self.logger.error('Pairing login error:', error);
@@ -51,7 +52,7 @@ module.exports = class TeslaChargerDriver extends Driver {
                 teslaSession.mfaVerify(mfaCode).then(response => {
                     self.logger.debug('onPair pincode', response);
                     self.logger.info('Login success');
-                    callback(null, true);
+                    socket.showView('list_devices');
                 }).catch(error => {
                     self.logger.error('Pairing pincode error:', error);
                     pairClicked = false;
@@ -99,10 +100,11 @@ module.exports = class TeslaChargerDriver extends Driver {
         socket.on('login', (data, callback) => {
             teslaSession.login(data.username, data.password).then(response => {
                 self.logger.debug('onRepair login', response);
-                callback(null, true);
                 if (!response.mfa) {
                     self.logger.info('Repair success');
                     socket.done();
+                } else {
+                    socket.showView('repair_pin_code');
                 }
             }).catch(error => {
                 self.logger.error('Reparing login error:', error);

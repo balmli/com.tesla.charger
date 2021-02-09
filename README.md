@@ -222,6 +222,10 @@ Use at your own risk. I accept no responsibility for any damages caused by using
 
 ## Release Notes:
 
+#### 1.1.2
+
+- Fix authentication.
+
 #### 1.1.1
 
 - Added location capability.

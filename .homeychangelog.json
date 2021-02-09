@@ -1,4 +1,7 @@
 {
+  "1.1.2": {
+    "en": "Fix authentication. "
+  },
   "1.1.1": {
     "en": "Added location capability. "
   },
